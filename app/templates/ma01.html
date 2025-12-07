@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>MA01 分数の性質</title>
     <style>
-        body { font-family: system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif; line-height: 1.7; margin: 1rem; }
+        body {
+            font-family: system-ui, -apple-system, "Hiragino Kaku Gothic ProN",
+                         "Yu Gothic", "Meiryo", sans-serif;
+            line-height: 1.7;
+            margin: 1rem;
+        }
         header h1 { margin: 0 0 0.5rem 0; font-size: 1.6rem; }
         a.back { display: inline-block; margin: 0.5rem 0 1rem 0; color: #0366d6; text-decoration: none; }
         .card { border: 1px solid #e1e4e8; padding: 1rem; border-radius: 6px; background: #fff; margin-bottom: 1rem; }
@@ -23,14 +28,14 @@
     <section class="intro card">
         <h2>導入</h2>
         <p>ここに MA01 の導入画像や短い説明文を入れてください。</p>
-        <!-- 画像を使う場合は static 配下に置き、下のパスを適宜変更してください -->
-        <img src="{% static 'images/ma01_intro.png' %}" alt="MA01 導入イメージ">
+        <!-- Flask では url_for を使って static ファイルにアクセスします -->
+        <img src="{{ url_for('static', filename='img/ma01_intro1.png') }}" alt="MA01 導入イメージ">
     </section>
 
     <section class="example card">
         <h2>【例題】</h2>
         <p>ここに【例題】の図や問題を入れます。必要に応じて数式や解説を追加してください。</p>
-        <img src="{% static 'images/ma01_example.png' %}" alt="例題イメージ">
+        <img src="{{ url_for('static', filename='img/ma01_reidai.png') }}" alt="例題イメージ">
         <div>
             <strong>例題（解答のポイント）:</strong>
             <p>・分数の約分・通分の考え方を整理すること。図を利用して視覚的に示すと分かりやすい。</p>
