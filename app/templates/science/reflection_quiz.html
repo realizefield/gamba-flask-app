@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光の反射の法則：用語の確認（最終版）</title>
+    <style>
+        /* --- 全体のデザイン (青色基調・歴史クイズ準拠) --- */
+        body {
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 20px auto;
+            line-height: 1.8;
+            font-size: 17px;
+            background: linear-gradient(180deg, #e3f2fd 0%, #f4f7fb 50%, #e3f2fd 100%);
+            color: #16324f;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1565c0;
+            margin-bottom: 18px;
+        }
+
+        .question-box {
+            border: 1px solid #90caf9;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(21, 101, 192, 0.1);
+        }
+
+        .question-box p strong {
+            color: #0d47a1;
+        }
+
+        /* --- 図のエリア --- */
+        #diagram-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 55%;
+            background-image: url('{{ url_for('static', filename='img/reflection_diagram.png') }}');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center top;
+            margin: 20px 0 30px 0;
+            border-radius: 10px;
+            background-color: #e3f2fd;
+            box-shadow: inset 0 0 0 1px #bbdefb;
+        }
+
+        /* --- 空欄のスタイル (歴史クイズ風・青系) --- */
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            min-height: 24px;
+            border-bottom: 2px solid #1e88e5; /* 青の下線 */
+            margin: 0 4px;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            line-height: 24px;
+            user-select: none;
+            font-size: 0.9em;
+            transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
+        }
+
+        .blank:hover {
+            background-color: #e3f2fd;
+            box-shadow: 0 0 0 1px #90caf9;
+        }
+
+        /* 図の空欄 (絶対位置) */
+        .diagram-blank {
+            position: absolute;
+            height: 25px;
+            width: 120px;
+            border: 2px solid #1e88e5;
+            background-color: #e3f2fd;
+            border-radius: 6px;
+            z-index: 10;
+        }
+
+        /* 図の空欄位置 */
+        #blank-diagram-A { top: 15%; left: 18%; }
+        #blank-diagram-B { top: 15%; right: 18%; }
+        #blank-diagram-C { bottom: 25%; right: 18%; }
+
+        .blank.correct {
+            background-color: #bbdefb;
+            border-bottom: 2px solid #1565c0;
+            box-shadow: 0 0 0 1px #64b5f6;
+            cursor: default;
+        }
+
+        /* --- 説明テキストと答えの表示 --- */
+        .study-text {
+            padding: 15px 18px;
+            margin-top: 15px;
+            border-radius: 10px;
+            line-height: 2.0;
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+        }
+
+        /* 学習モードの答え（赤文字＋下線） */
+        .study-text .blank.study-mode {
+            border-bottom: 2px solid red !important;
+            background-color: transparent !important;
+            color: red !important;
+            font-weight: bold;
+            cursor: default;
+            box-shadow: none;
+        }
+
+        /* 図中の空欄は学習モードでも枠のまま */
+        .diagram-blank.study-mode {
+            border-color: #1e88e5 !important;
+            color: #1e88e5 !important;
+        }
+
+        /* --- 語群エリア (歴史クイズ風) --- */
+        #word-bank-label {
+            margin-top: 14px;
+            color: #0d47a1;
+        }
+
+        .word-bank {
+            border: 1px solid #90caf9;
+            border-radius: 10px;
+            padding: 10px;
+            min-height: 60px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            background-color: #e3f2fd;
+        }
+
+        .word-chip {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #1976d2;
+            background-color: #ffffff;
+            cursor: grab;
+            user-select: none;
+            font-size: 0.9em;
+            box-shadow: 0 2px 4px rgba(25, 118, 210, 0.25);
+            transition: transform 0.1s, box-shadow 0.1s, background-color 0.1s;
+        }
+
+        .word-chip:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(25, 118, 210, 0.3);
+            background-color: #e3f2fd;
+        }
+
+        .word-chip.used {
+            opacity: 0.35;
+            cursor: default;
+            box-shadow: none;
+        }
+
+        /* --- コントロールとフィードバック --- */
+        .controls {
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95em;
+            box-shadow: 0 3px 6px rgba(21, 101, 192, 0.4);
+            transition: transform 0.1s, box-shadow 0.1s, opacity 0.1s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(21, 101, 192, 0.45);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(21, 101, 192, 0.3);
+        }
+
+        button.secondary {
+            background: linear-gradient(135deg, #78909c, #546e7a);
+            box-shadow: 0 3px 6px rgba(84, 110, 122, 0.4);
+        }
+
+        .result-message {
+            margin-top: 12px;
+            font-weight: bold;
+            text-align: center;
+            color: #0d47a1;
+        }
+
+        .next-actions {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #bbdefb;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .next-actions button {
+            padding-inline: 22px;
+        }
+
+        /* --- 隠す要素 --- */
+        .hidden { display: none !important; }
+
+        /* --- スマホ対応 --- */
+        @media (max-width: 600px) {
+             body { font-size: 16px; padding: 0 8px; }
+             #diagram-container { padding-bottom: 70%; }
+             .diagram-blank { width: 90px; font-size: 0.8em; }
+             #blank-diagram-A { top: 15%; left: 5%; }
+             #blank-diagram-B { top: 15%; right: 5%; }
+             #blank-diagram-C { bottom: 25%; right: 10%; }
+             .controls { justify-content: space-around; }
+             .controls button { width: 45%; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>光の反射の法則：用語の確認</h1>
+
+<div class="question-box">
+    <p><strong>【図の問題】</strong> 図の用語を答えなさい。</p>
+    <div id="diagram-container">
+        <span class="blank diagram-blank" data-blank-id="A" id="blank-diagram-A"></span>
+        <span class="blank diagram-blank" data-blank-id="B" id="blank-diagram-B"></span>
+        <span class="blank diagram-blank" data-blank-id="C" id="blank-diagram-C"></span>
+    </div>
+
+    <p><strong>【文章の問題】</strong> 説明文の空欄を埋めなさい。</p>
+    <div id="study-explain" class="study-text">
+        <p>光は<span class="blank" data-blank-id="D">直進</span>します。</p>
+        <p>光の発生している場所を<span class="blank" data-blank-id="E">光源</span>と言います。</p>
+        <p>光（光線）が、空気と鏡、空気と水、ガラスと空気などの異なる物質（媒質）の境界面に当たる点を<span class="blank" data-blank-id="F">入射点</span>と言います。</p>
+        <p>反射の法則：鏡に入射した光線は、入射点を通る鏡に垂直な直線に対してできる
+            <span class="blank" data-blank-id="G">入射角</span>
+            ＝
+            <span class="blank" data-blank-id="H">反射角</span>
+            が成り立ちます。これを<span class="blank" data-blank-id="I">反射</span>の法則と言います。
+        </p>
+    </div>
+
+    <p id="word-bank-label" class="hidden"><strong>【語群】（ドラッグ＆ドロップで空欄に入れよう）</strong></p>
+    <div id="word-bank" class="word-bank hidden"></div>
+
+    <div class="controls">
+        <button id="confirm-btn">確認 (クイズ開始)</button>
+        <button id="check-btn" class="hidden">判定</button>
+        <button id="retry-btn" class="secondary hidden">リトライ</button>
+        <button id="study-btn" class="secondary hidden">説明に戻る</button>
+    </div>
+
+    <div id="result" class="result-message"></div>
+
+    <div id="next-actions" class="next-actions hidden">
+        <button onclick="alert('この単元の練習問題に進みます。')">練習問題</button>
+        <button onclick="alert('この単元の確認テストに進みます。')">確認テスト</button>
+        <button onclick="alert('次の単元に進みます。')">次の単元</button>
+    </div>
+</div>
+
+<script>
+  // --- 問題データ (9箇所の空欄の正解) ---
+  const answers = {
+    A: "入射角", B: "反射角", C: "入射点",
+    D: "直進", E: "光源", F: "入射点", G: "入射角", H: "反射角", I: "反射"
+  };
+
+  // 語群（全9箇所の空欄に対応する、ダミーなしの9個の語群）
+  const choices = [
+      "入射角", "反射角", "入射点",
+      "直進", "光源", "反射",
+      "入射角", "反射角", "入射点"
+  ];
+
+  // --- DOM要素 ---
+  const allBlanks = document.querySelectorAll(".blank");
+  const wordBank = document.getElementById("word-bank");
+  const confirmBtn = document.getElementById("confirm-btn");
+  const checkBtn = document.getElementById("check-btn");
+  const retryBtn = document.getElementById("retry-btn");
+  const studyBtn = document.getElementById("study-btn");
+  const nextActions = document.getElementById("next-actions");
+  const explainBox = document.getElementById("study-explain");
+  const wordBankLabel = document.getElementById("word-bank-label");
+  const resultMessage = document.getElementById("result");
+
+  // --- ユーティリティ関数 ---
+  function shuffle(array) {
+    const arr = array.slice();
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // --- 語群の描画 (クイズモード用) ---
+  function renderWordBank() {
+    wordBank.innerHTML = "";
+    const shuffled = shuffle(choices);
+
+    shuffled.forEach((word, index) => {
+      const chip = document.createElement("div");
+      chip.className = "word-chip";
+      chip.textContent = word;
+      chip.draggable = true;
+      chip.dataset.word = word;
+      chip.id = `chip-${word}-${index}`;
+
+      chip.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("text/plain", word);
+        e.dataTransfer.setData("text/chip-id", chip.id);
+      });
+
+      wordBank.appendChild(chip);
+    });
+  }
+
+  // --- 空欄へのD&D設定 (クイズモード用) ---
+  function setupBlanksForQuiz() {
+    allBlanks.forEach(blank => {
+      blank.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+
+      blank.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const word = e.dataTransfer.getData("text/plain");
+        const chipId = e.dataTransfer.getData("text/chip-id");
+        if (!word) return;
+
+        const chip = document.getElementById(chipId);
+        if (!chip || chip.classList.contains('used')) return;
+
+        const previousWord = blank.dataset.word;
+        const previousChipId = blank.dataset.chipId;
+
+        if (previousWord) {
+          const previousChip = document.getElementById(previousChipId);
+          if (previousChip) previousChip.classList.remove('used');
+        }
+
+        blank.textContent = word;
+        blank.dataset.word = word;
+        blank.dataset.chipId = chipId;
+        blank.classList.remove("correct");
+
+        chip.classList.add("used");
+      });
+
+      // クリックでクリア
+      blank.addEventListener("click", () => {
+        const chipId = blank.dataset.chipId;
+        if (!chipId || blank.classList.contains('correct')) return;
+        const chip = document.getElementById(chipId);
+        if (chip) chip.classList.remove("used");
+        blank.textContent = "";
+        blank.dataset.word = "";
+        blank.dataset.chipId = "";
+        blank.classList.remove("correct");
+      });
+    });
+  }
+
+  // --- 判定処理 ---
+  function checkAnswers() {
+    let allCorrect = true;
+
+    allBlanks.forEach(blank => {
+      const id = blank.dataset.blankId;
+      const userWord = blank.dataset.word;
+
+      if (answers[id] === userWord) {
+        blank.classList.add("correct");
+        blank.style.cursor = "default";
+      } else {
+        allCorrect = false;
+
+        const chipId = blank.dataset.chipId;
+        if (chipId) {
+          const chip = document.getElementById(chipId);
+          if (chip) chip.classList.remove("used");
+        }
+
+        blank.textContent = "";
+        blank.dataset.word = "";
+        blank.dataset.chipId = "";
+        blank.classList.remove("correct");
+      }
+    });
+
+    if (allCorrect) {
+      resultMessage.textContent = "合格おめでとう！";
+      nextActions.classList.remove('hidden');
+      checkBtn.classList.add('hidden');
+      retryBtn.classList.add('hidden');
+      studyBtn.classList.add('hidden');
+      wordBank.classList.add('hidden');
+      wordBankLabel.classList.add('hidden');
+
+      allBlanks.forEach(blank => {
+        blank.style.cursor = "default";
+      });
+
+    } else {
+      resultMessage.textContent = "まだ間違いがあります。再チャレンジしてみよう！";
+      nextActions.classList.add('hidden');
+      retryBtn.classList.remove('hidden');
+    }
+  }
+
+  // --- モード切替 ---
+
+  // 初期/説明モード
+  function setStudyMode() {
+    explainBox.classList.remove('hidden');
+    wordBank.classList.add('hidden');
+    wordBankLabel.classList.add('hidden');
+    checkBtn.classList.add('hidden');
+    retryBtn.classList.add('hidden');
+    nextActions.classList.add('hidden');
+    studyBtn.classList.add('hidden');
+    confirmBtn.classList.remove('hidden');
+    resultMessage.textContent = "";
+
+    allBlanks.forEach(blank => {
+        const id = blank.dataset.blankId;
+        blank.textContent = answers[id];
+        blank.dataset.word = answers[id];
+
+        if (blank.classList.contains('diagram-blank')) {
+            blank.classList.add('study-mode');
+        } else {
+            blank.classList.add('study-mode');
+        }
+        blank.classList.remove('correct');
+    });
+  }
+
+  // クイズモード
+  function setQuizMode() {
+    explainBox.classList.remove('hidden');
+    wordBank.classList.remove('hidden');
+    wordBankLabel.classList.remove('hidden');
+    confirmBtn.classList.add('hidden');
+    checkBtn.classList.remove('hidden');
+    retryBtn.classList.add('hidden');
+    nextActions.classList.add('hidden');
+    studyBtn.classList.remove('hidden');
+    resultMessage.textContent = "";
+
+    renderWordBank();
+
+    allBlanks.forEach(blank => {
+        blank.textContent = "";
+        blank.dataset.word = "";
+        blank.dataset.chipId = "";
+        blank.classList.remove('study-mode');
+        blank.classList.remove('correct');
+        blank.style.cursor = "pointer";
+    });
+  }
+
+  // --- イベントリスナー設定 ---
+  window.addEventListener("DOMContentLoaded", () => {
+    setupBlanksForQuiz();
+
+    confirmBtn.addEventListener("click", setQuizMode);
+    checkBtn.addEventListener("click", checkAnswers);
+    retryBtn.addEventListener("click", setQuizMode);
+    studyBtn.addEventListener("click", setStudyMode);
+
+    // 初期モードを設定
+    setStudyMode();
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+{
+  "unit_id": "MB03",
+  "unit_title": "乗法公式（たして・かける）",
+  "intro": {
+    "type": "image",
+    "url": "/static/math/MB03/intro.png"
+  },
+  "example": {
+    "type": "image",
+    "url": "/static/math/MB03/example.png"
+  },
+  "practice": [
+    {
+      "id": 1,
+      "question": "(x+4)(x+7)",
+      "solution": ["x^2 + 11x + 28"],
+      "answer": "x^2 + 11x + 28"
+    },
+    {
+      "id": 2,
+      "question": "(x+6)(x+5)",
+      "solution": ["x^2 + 11x + 30"],
+      "answer": "x^2 + 11x + 30"
+    },
+    {
+      "id": 3,
+      "question": "(x+5)(x-7)",
+      "solution": ["x^2 - 2x - 35"],
+      "answer": "x^2 - 2x - 35"
+    },
+    {
+      "id": 4,
+      "question": "(x-6)(x+7)",
+      "solution": ["x^2 + x - 42"],
+      "answer": "x^2 + x - 42"
+    }
+  ],
+  "check": [
+    {
+      "id": 1,
+      "question": "(x+3)(x+8) を展開すると？",
+      "options": [
+        "x^2 + 11x + 24",
+        "x^2 + 8x + 3",
+        "x^2 + 5x + 24",
+        "x^2 + 3x + 8",
+        "どれでもない"
+      ],
+      "correct_index": 0,
+      "explanation": "3 + 8 = 11 なので、x^2 + 11x + 24 です。"
+    },
+    {
+      "id": 2,
+      "question": "(x-2)(x+9) を展開すると？",
+      "options": [
+        "x^2 + 7x - 18",
+        "x^2 - 7x - 18",
+        "x^2 + 9x - 2",
+        "x^2 + x - 18",
+        "どれでもない"
+      ],
+      "correct_index": 0,
+      "explanation": "-2 + 9 = 7 なので、x^2 + 7x - 18 です。"
+    }
+  ]
+}

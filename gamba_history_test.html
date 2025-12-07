@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光の反射の法則：用語の確認（最終版）</title>
+    <style>
+        /* --- 全体のデザイン (歴史クイズのデザイン基準) --- */
+        body {
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: 20px auto;
+            line-height: 1.8; 
+            font-size: 17px; 
+            background-color: #f4f4f9;
+        }
+
+        .question-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+
+        /* --- 図のエリア --- */
+        #diagram-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 55%; 
+            background-image: url('{{ url_for('static', filename='img/reflection_diagram.png') }}');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center top; 
+            margin: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        /* --- 空欄のスタイル (歴史クイズのデザイン) --- */
+        .blank {
+            display: inline-block;
+            min-width: 80px;
+            min-height: 24px;
+            border-bottom: 2px solid #666; /* クイズモードの下線 */
+            margin: 0 4px;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            background-color: #fff;
+            box-sizing: border-box;
+            line-height: 24px;
+            user-select: none;
+            font-size: 0.9em; 
+        }
+        
+        /* 図の空欄 (絶対位置の最終調整) */
+        .diagram-blank {
+            position: absolute;
+            height: 25px;
+            width: 120px;
+            border: 2px solid #666; 
+            background-color: #f8f8f8;
+            z-index: 10;
+        }
+        /* 図の空欄位置にCSSで配置を最終修正 */
+        #blank-diagram-A { top: 15%; left: 18%; } 
+        #blank-diagram-B { top: 15%; right: 18%; } 
+        #blank-diagram-C { bottom: 25%; right: 18%; } 
+
+        .blank.correct {
+            background-color: #ccf; 
+            border-bottom: 2px solid #339;
+        }
+
+        /* --- 説明テキストと答えの表示 --- */
+        .study-text {
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+            line-height: 2.0; 
+        }
+        /* 学習モードの答え（赤文字＋下線） */
+        .study-text .blank.study-mode {
+             border-bottom: 2px solid red !important; /* 赤い下線を引く */
+             background-color: transparent !important;
+             color: red !important; 
+             font-weight: bold;
+             cursor: default;
+        }
+
+
+        /* --- 語群エリア (歴史クイズのデザイン) --- */
+        .word-bank {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 8px;
+            min-height: 60px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .word-chip {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #666;
+            background-color: #f5f5f5;
+            cursor: grab;
+            user-select: none;
+            font-size: 0.9em;
+        }
+
+        .word-chip.used {
+            opacity: 0.4;
+            cursor: default;
+        }
+        
+        /* --- コントロールとフィードバック --- */
+        .controls {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 18px;
+            border-radius: 6px;
+            border: none;
+            background-color: #1976d2;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button.secondary {
+            background-color: #666;
+        }
+        .result-message {
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        .next-actions {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
+            display: flex;
+            gap: 12px;
+        }
+
+        /* --- 隠す要素 --- */
+        .hidden { display: none !important; }
+
+        /* --- スマホ対応 --- */
+        @media (max-width: 600px) {
+             body { font-size: 16px; }
+             #diagram-container { padding-bottom: 70%; }
+             .diagram-blank { width: 90px; }
+             #blank-diagram-A { top: 15%; left: 5%; }
+             #blank-diagram-B { top: 15%; right: 5%; }
+             #blank-diagram-C { bottom: 25%; right: 10%; }
+             .controls { justify-content: space-around; }
+             .controls button { width: 45%; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>光の反射の法則：用語の確認</h1>
+
+<div class="question-box">
+    
+    <p><strong>【図の問題】</strong> 図の用語を答えなさい。</p>
+    <div id="diagram-container">
+        <span class="blank diagram-blank" data-blank-id="A" id="blank-diagram-A"></span>
+        <span class="blank diagram-blank" data-blank-id="B" id="blank-diagram-B"></span>
+        <span class="blank diagram-blank" data-blank-id="C" id="blank-diagram-C"></span>
+    </div>
+
+    <p><strong>【文章の問題】</strong> 説明文の空欄を埋めなさい。</p>
+    <div id="study-explain" class="study-text">
+        <p>光は<span class="blank" data-blank-id="D">直進</span>します。</p>
+        <p>光の発生している場所を<span class="blank" data-blank-id="E">光源</span>と言います。</p>
+        <p>光（光線）が、空気と鏡、空気と水、ガラスと空気などの異なる物質（媒質）の境界面に当たる点を<span class="blank" data-blank-id="F">入射点</span>と言います。</p>
+        <p>反射の法則：鏡に入射した光線は、入射点を通る鏡に垂直な直線に対してできる<span class="blank" data-blank-id="G">入射角</span> ＝ <span class="blank" data-blank-id="H">反射角</span>が成り立ちます。これを<span class="blank" data-blank-id="I">反射</span>の法則と言います。</p>
+    </div>
+
+    <p id="word-bank-label" class="hidden"><strong>【語群】（ドラッグ＆ドロップで空欄に入れよう）</strong></p>
+    <div id="word-bank" class="word-bank hidden">
+        </div>
+
+    <div class="controls">
+        <button id="confirm-btn">確認 (クイズ開始)</button>
+        <button id="check-btn" class="hidden">判定</button>
+        <button id="retry-btn" class="secondary hidden">リトライ</button>
+        <button id="study-btn" class="secondary hidden">説明に戻る</button>
+    </div>
+
+    <div id="result" class="result-message"></div>
+
+    <div id="next-actions" class="next-actions hidden">
+        <button onclick="alert('この単元の練習問題に進みます。')">練習問題</button>
+        <button onclick="alert('この単元の確認テストに進みます。')">確認テスト</button>
+        <button onclick="alert('次の単元に進みます。')">次の単元</button>
+    </div>
+</div>
+
+<script>
+  // --- 問題データ (9箇所の空欄の正解) ---
+  const answers = {
+    A: "入射角", B: "反射角", C: "入射点", 
+    D: "直進", E: "光源", F: "入射点", G: "入射角", H: "反射角", I: "反射" 
+  };
+
+  // 語群（全9箇所の空欄に対応する、ダミーなしの9個の語群）
+  const choices = [
+      "入射角", "反射角", "入射点", 
+      "直進", "光源", "反射", 
+      "入射角", "反射角", "入射点" // 必要数に合わせるため、重複をそのまま含める
+  ]; 
+
+  // --- DOM要素 ---
+  const allBlanks = document.querySelectorAll(".blank");
+  const wordBank = document.getElementById("word-bank");
+  const confirmBtn = document.getElementById("confirm-btn");
+  const checkBtn = document.getElementById("check-btn");
+  const retryBtn = document.getElementById("retry-btn");
+  const studyBtn = document.getElementById("study-btn");
+  const nextActions = document.getElementById("next-actions");
+  const explainBox = document.getElementById("study-explain");
+  const wordBankLabel = document.getElementById("word-bank-label");
+  const resultMessage = document.getElementById("result");
+
+  // --- ユーティリティ関数 ---
+  function shuffle(array) {
+    const arr = array.slice();
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // --- 語群の描画 (クイズモード用) ---
+  function renderWordBank() {
+    wordBank.innerHTML = "";
+    // choicesをそのまま使う（重複があるため、総当たりクイズとして成立）
+    const shuffled = shuffle(choices);
+
+    shuffled.forEach((word, index) => {
+      const chip = document.createElement("div");
+      chip.className = "word-chip";
+      chip.textContent = word;
+      chip.draggable = true;
+      chip.dataset.word = word;
+      // 語群内の重複単語を区別するため、一意なIDを付与
+      chip.id = `chip-${word}-${index}`; 
+
+      chip.addEventListener("dragstart", (e) => {
+        // データを渡すときに、一意なIDも渡す
+        e.dataTransfer.setData("text/plain", word);
+        e.dataTransfer.setData("text/chip-id", chip.id); 
+      });
+
+      wordBank.appendChild(chip);
+    });
+  }
+  
+  // --- 空欄へのD&D設定 (クイズモード用) ---
+  function setupBlanksForQuiz() {
+    allBlanks.forEach(blank => {
+      blank.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+
+      blank.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const word = e.dataTransfer.getData("text/plain");
+        const chipId = e.dataTransfer.getData("text/chip-id");
+        
+        if (!word) return;
+
+        // 語群チップの使用済みチェック（IDでチェック）
+        const chip = document.getElementById(chipId);
+        if (chip.classList.contains('used')) return;
+
+        // 以前の語句を語群に戻す（IDで戻す）
+        const previousWord = blank.dataset.word;
+        const previousChipId = blank.dataset.chipId;
+
+        if (previousWord) {
+            const previousChip = document.getElementById(previousChipId);
+            if (previousChip) previousChip.classList.remove('used');
+        }
+
+        // 空欄に語句をセット
+        blank.textContent = word;
+        blank.dataset.word = word;
+        blank.dataset.chipId = chipId; // 使用されたチップのIDを保存
+        blank.classList.remove("correct"); 
+        
+        // 語群チップを使用済みに
+        chip.classList.add("used");
+      });
+
+      // クリックでクリア（ミスったとき用）
+      blank.addEventListener("click", () => {
+        const chipId = blank.dataset.chipId;
+        if (!chipId || blank.classList.contains('correct')) return; 
+        const chip = document.getElementById(chipId);
+        if (chip) chip.classList.remove("used");
+        blank.textContent = "";
+        blank.dataset.word = "";
+        blank.dataset.chipId = "";
+        blank.classList.remove("correct");
+      });
+    });
+  }
+
+  // --- 判定処理 ---
+  function checkAnswers() {
+    let allCorrect = true;
+
+    allBlanks.forEach(blank => {
+      const id = blank.dataset.blankId;
+      const userWord = blank.dataset.word;
+      
+      if (answers[id] === userWord) {
+        // 正解
+        blank.classList.add("correct");
+        blank.style.cursor = "default";
+      } else {
+        allCorrect = false;
+        
+        // 不正解の語句を語群に戻す
+        const chipId = blank.dataset.chipId;
+        if (chipId) {
+            const chip = document.getElementById(chipId);
+            if (chip) chip.classList.remove("used");
+        }
+        
+        // 空欄をリセット
+        blank.textContent = "";
+        blank.dataset.word = "";
+        blank.dataset.chipId = "";
+        blank.classList.remove("correct");
+      }
+    });
+
+    if (allCorrect) {
+      resultMessage.textContent = "合格おめでとう！";
+      nextActions.classList.remove('hidden');
+      checkBtn.classList.add('hidden');
+      retryBtn.classList.add('hidden');
+      studyBtn.classList.add('hidden'); 
+      wordBank.classList.add('hidden');
+      wordBankLabel.classList.add('hidden');
+      
+      // すべての空欄を確定
+      allBlanks.forEach(blank => {
+          blank.style.cursor = "default";
+      });
+
+    } else {
+      resultMessage.textContent = "まだ間違いがあります。再チャレンジしてみよう！";
+      nextActions.classList.add('hidden');
+      retryBtn.classList.remove('hidden');
+    }
+  }
+
+  // --- モード切替 ---
+  
+  // 初期/説明モード
+  function setStudyMode() {
+    explainBox.classList.remove('hidden');
+    wordBank.classList.add('hidden');
+    wordBankLabel.classList.add('hidden');
+    checkBtn.classList.add('hidden');
+    retryBtn.classList.add('hidden');
+    nextActions.classList.add('hidden');
+    studyBtn.classList.add('hidden'); 
+    confirmBtn.classList.remove('hidden');
+    resultMessage.textContent = "";
+
+    // 答えを空欄に表示 (学習モード)
+    allBlanks.forEach(blank => {
+        const id = blank.dataset.blankId;
+        // 答えをセット
+        blank.textContent = answers[id];
+        blank.dataset.word = answers[id];
+        
+        // 文章の空欄は赤下線、図の空欄は枠を維持
+        if (blank.classList.contains('diagram-blank')) {
+            blank.classList.remove('study-mode');
+        } else {
+            blank.classList.add('study-mode');
+        }
+        blank.classList.remove('correct');
+    });
+  }
+
+  // クイズモード
+  function setQuizMode() {
+    explainBox.classList.remove('hidden'); 
+    wordBank.classList.remove('hidden');
+    wordBankLabel.classList.remove('hidden');
+    confirmBtn.classList.add('hidden');
+    checkBtn.classList.remove('hidden');
+    retryBtn.classList.add('hidden');
+    nextActions.classList.add('hidden');
+    studyBtn.classList.remove('hidden'); 
+    resultMessage.textContent = "";
+
+    renderWordBank(); // 語群を再描画
+    
+    // 空欄をリセット
+    allBlanks.forEach(blank => {
+        blank.textContent = "";
+        blank.dataset.word = "";
+        blank.dataset.chipId = "";
+        blank.classList.remove('study-mode');
+        blank.classList.remove('correct');
+    });
+  }
+
+  // --- イベントリスナー設定 ---
+  window.addEventListener("DOMContentLoaded", () => {
+    setupBlanksForQuiz();
+
+    confirmBtn.addEventListener("click", setQuizMode);
+    checkBtn.addEventListener("click", checkAnswers);
+    retryBtn.addEventListener("click", setQuizMode);
+    studyBtn.addEventListener("click", setStudyMode);
+
+    // 初期モードを設定
+    setStudyMode();
+  });
+</script>
+
+</body>
+</html>

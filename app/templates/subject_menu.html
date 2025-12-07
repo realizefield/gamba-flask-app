@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ subject.name }} メニュー | GAMBA{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ subject.name }}：メニュー</h1>
+    <p>学習したい項目を選んでください。</p>
+
+    <div style="margin-bottom: 12px;">
+        <a href="{{ url_for('review', subject_id=subject.id) }}"
+           class="btn btn-primary">復習する</a>
+        <a href="{{ url_for('new_unit', subject_id=subject.id) }}"
+           class="btn btn-secondary">新しい単元に進む</a>
+        <a href="{{ url_for('progress', subject_id=subject.id) }}"
+           class="btn btn-outline">学習進度の確認</a>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline">
+        科目選択に戻る
+    </a>
+</div>
+{% endblock %}

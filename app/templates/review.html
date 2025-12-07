@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>{{ subject.name }}の復習</h2>
+  {% if units %}
+    <p>復習したい単元を選んでください。</p>
+    <ul>
+      {% for u in units %}
+        <li>
+          {{ u.order }}. {{ u.title }}
+          <a href="{{ url_for('unit_intro', unit_id=u.id) }}" class="btn" style="margin-left:8px;">
+            導入から復習
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>まだ復習できる単元がありません。（新しい単元に進んでから復習が可能になります。）</p>
+  {% endif %}
+</div>
+
+<p><a href="{{ url_for('subject_menu', subject_id=subject.id) }}" class="btn secondary">科目メニューに戻る</a></p>
+{% endblock %}

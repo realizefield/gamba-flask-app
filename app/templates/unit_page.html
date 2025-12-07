@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container my-4">
+
+    <h2 class="mb-4">{{ unit_code }} :</h2>
+
+    <!-- ページタイトル -->
+    {% if page == "intro" %}
+        <h4>【導入】</h4>
+    {% elif page == "example" %}
+        <h4>【例題】</h4>
+    {% elif page == "practice" %}
+        <h4>【類題・練習】</h4>
+    {% elif page == "check" %}
+        <h4>【確認問題】</h4>
+    {% endif %}
+
+    <hr>
+
+    <!-- JSON の content 表示 -->
+    {% if content.type == "image" %}
+        <img src="{{ content.url }}" class="img-fluid" alt="image">
+    {% endif %}
+
+    {% if content.type == "text" %}
+        <div class="mt-3">
+            {{ content.text | safe }}
+        </div>
+    {% endif %}
+
+    {% if content.type == "example" %}
+        <div class="mt-3">
+            <p>{{ content.question | safe }}</p>
+            <h5>【解説】</h5>
+            {% for line in content.solution %}
+                <p>{{ line | safe }}</p>
+            {% endfor %}
+            <p><strong>答え：{{ content.answer }}</strong></p>
+        </div>
+    {% endif %}
+
+    {% if content.type == "practice-list" %}
+        <div class="mt-4">
+            <h4>【類題】</h4>
+            <ul>
+                {% for q in content.items %}
+                    <li class="mb-3">
+                        <strong>{{ loop.index }}. {{ q.question }}</strong><br>
+
+                        <details class="mt-2">
+                            <summary>▼ 解説を表示</summary>
+                            {% for s in q.solution %}
+                                <div class="ms-4">{{ s | safe }}</div>
+                            {% endfor %}
+                            <div class="mt-2">
+                                <strong>答え：{{ q.answer }}</strong>
+                            </div>
+                        </details>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <!-- ▼ 確認問題（5択） -->
+    {% if content.type == "check-list" %}
+        <h4 class="mt-4">【確認問題】</h4>
+
+        <form method="POST">
+            {% for q in content.items %}
+                <div class="mb-4">
+                    <p><strong>{{ loop.index }}. {{ q.text }}</strong></p>
+
+                    {% for opt in q.options %}
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="q{{ loop.parent.loop.index }}"
+                                   value="{{ loop.index0 }}">
+                            <label class="form-check-label">
+                                {{ opt | safe }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button class="btn btn-primary">採点する</button>
+        </form>
+
+        {% if score is not none %}
+            <h4 class="mt-4">得点：{{ score }} 点</h4>
+        {% endif %}
+    {% endif %}
+
+    <hr class="my-4">
+
+    <!-- ▼ ナビゲーションボタン -->
+    <div class="d-flex flex-wrap gap-3">
+
+        <a href="{{ url_for('unit_intro', unit_id=unit_code) }}"
+           class="btn btn-light">導入を見る</a>
+
+        <a href="{{ url_for('unit_example', unit_id=unit_code) }}"
+           class="btn btn-danger">例題</a>
+
+        <a href="{{ url_for('unit_practice', unit_id=unit_code) }}"
+           class="btn btn-warning">類題・練習</a>
+
+        <!-- ★ 追加：確認問題 -->
+        <a href="{{ url_for('unit_check', unit_id=unit_code) }}"
+           class="btn btn-success">確認問題へ進む</a>
+
+        <a href="{{ url_for('subject_menu', subject_id=subject.id) }}"
+           class="btn btn-secondary">数学メニューに戻る</a>
+
+    </div>
+
+</div>
+
+{% endblock %}

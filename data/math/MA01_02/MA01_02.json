@@ -1,0 +1,44 @@
+{
+  "unit_id": "MA01_02",
+  "unit_title": "和と差の積（平方の差）",
+  "intro": {
+    "type": "image",
+    "url": "/static/math/MA01_02/intro.png"
+  },
+    "example": {
+    "question": " \\((x+4)(x-4)\\) を展開しなさい。",
+    "solution": [
+      "\\(x^2 + (-4)x + 4x + (-4)\\cdot 4\\)",
+      "＝ \\(x^2 - 16\\)",
+      "真ん中の項が消える → 平方の差"
+    ],
+    "answer": "\\(x^2 - 16\\)"
+  },
+    "practice": [
+    {
+      "id": 1,
+      "question": " \\((x+5)(x-5)\\) ",
+      "solution": ["\\(x^2 - 5^2 = x^2 - 25\\)"],
+      "answer": "\\(x^2 - 25\\)"
+    },
+    {
+      "id": 2,
+      "question": " \\((x+1)(x-1)\\) ",
+      "solution": ["\\(x^2 - 1^2 = x^2 - 1\\)"],
+      "answer": "\\(x^2 - 1\\)"
+    },
+    {
+      "id": 3,
+      "question": " \\((x+7)(x-7)\\) ",
+      "solution": ["\\(x^2 - 49\\)"],
+      "answer": "\\(x^2 - 49\\)"
+    },
+    {
+      "id": 4,
+      "question": " \\((x+3)(x-3)\\) ",
+      "solution": ["\\(x^2 - 9\\)"],
+      "answer": "\\(x^2 - 9\\)"
+    }
+  ]
+
+}

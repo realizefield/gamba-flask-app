@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>{{ subject.name }}：{{ unit.title }}（問題）</h2>
+
+  {% if question %}
+    <p style="white-space:pre-wrap;">{{ question.text }}</p>
+
+    <form method="post">
+      <div style="margin-bottom:8px;">
+        <label>解答を入力してください。</label><br>
+        <textarea name="answer" rows="4" style="width:100%;">{{ user_answer }}</textarea>
+      </div>
+      <button type="submit" class="btn">解答を送信する</button>
+    </form>
+
+    {% if result %}
+      <hr>
+      <h3>解説</h3>
+      <p style="white-space:pre-wrap;">{{ question.explanation }}</p>
+    {% endif %}
+  {% else %}
+    <p>この単元にはまだ問題が登録されていません。</p>
+  {% endif %}
+</div>
+
+<p><a href="{{ url_for('subject_menu', subject_id=subject.id) }}" class="btn secondary">科目メニューに戻る</a></p>
+{% endblock %}

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>理科 1-1：光の進み方 - GAMBA2</title>
+    
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+        /* 理科テーマ（オレンジ系） */
+        :root {
+            --main-color: #fd7e14; /* Warning Orange */
+            --light-orange: #fff2e6;
+        }
+        body {
+            font-family: "Yu Gothic", "Meiryo", sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px 0;
+        }
+        .container {
+            max-width: 800px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: var(--main-color);
+            border-left: 5px solid var(--main-color);
+            padding-left: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        /* AI解説ボックス */
+        .ai-explanation {
+            background-color: var(--light-orange);
+            border-left: 4px solid var(--main-color);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: #333;
+        }
+        .hook-section {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px dashed #ccc;
+        }
+        .progress-bar-container {
+            height: 20px;
+            margin-bottom: 20px;
+        }
+        .quiz-section {
+            border-top: 2px solid var(--main-color);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <span class="badge bg-warning text-dark fs-6">中学理科 1-1</span>
+        <a href="home.html" class="btn btn-sm btn-outline-warning text-dark">単元一覧へ戻る</a>
+    </div>
+    
+    <h1>光の進み方：なんで影ができるの？身近な光のルール</h1>
+
+    <div class="progress progress-bar-container">
+        <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" id="lesson-progress">ステップ 1/4</div>
+    </div>
+
+    ---
+
+    <div id="step-1" class="lesson-step">
+        <h2 class="h4">ステップ 1：影は光が教えてくれる！</h2>
+        <div class="hook-section">
+            <p class="lead">どうして、私たちの**影**は、いつも太陽や電気と反対側にできるのでしょうか？</p>
+            <p>これは、光のたった一つの簡単なルールを知れば、すぐにわかります。光は、目に見えないけれど、実はとても**几帳面**な性質を持っているんです。</p>
+        </div>
+        
+        <div class="ai-explanation">
+            <strong>AIの解説：</strong>
+            <p>光が影を作る秘密。それは、光が**まっすぐ進む**というルールです。もし光が曲がって進んだら、壁の向こう側まで光が届いてしまい、影はできませんよね！</p>
+        </div>
+        
+        <div class="text-end">
+            <button class="btn btn-warning text-dark" onclick="nextStep()">ステップ 2 へ</button>
+        </div>
+    </div>
+
+    <div id="step-2" class="lesson-step d-none">
+        <h2 class="h4">ステップ 2：光の超速・直進ルール</h2>
+        
+        <p>光の最も重要なルールは以下の2つです。</p>
+        
+        <div class="ai-explanation">
+            <p>1. **光は直進する**: 光は、何もさえぎるものがなければ、どこまでも**まっすぐに**進みます。</p>
+            <p>2. **光は超速い**: 真空中では秒速約 **30万km**で進みます。地球を1秒間に**約7周半**する速さです。この速さのおかげで、私たちはスイッチを押した瞬間に部屋が明るくなるのです。</p>
+            
+            <p class="mt-3">影や日食・月食ができるのは、光がこの直進ルールを必ず守っているからです。</p>
+            
+
+[Image of light rays traveling in straight lines creating a shadow]
+
+        </div>
+
+        <div class="text-end">
+            <button class="btn btn-warning text-dark" onclick="nextStep()">ステップ 3 へ</button>
+        </div>
+    </div>
+
+    <div id="step-3" class="lesson-step d-none">
+        <h2 class="h4">ステップ 3：鏡に映る秘密「反射の法則」</h2>
+        
+        <p>まっすぐ進んだ光が、鏡のような平らな面にぶつかると、光は跳ね返ります。この跳ね返りのルールを「**反射の法則**」と呼びます。</p>
+        
+        <div class="ai-explanation">
+            <strong>反射の法則はとても簡単！</strong>
+            <p>光が入ってくる角度（**入射角**）と、跳ね返っていく角度（**反射角**）は、**必ず同じ**になります。</p>
+            <p>鏡で自分の顔が見えるのも、光がこの法則通りに進んで、あなたの目に戻ってきているからなんですね。</p>
+            
+
+[Image of the Law of Reflection showing the incident ray, reflected ray, and normal line with equal incident angle and reflection angle]
+
+        </div>
+        
+        <div class="text-end">
+            <button class="btn btn-warning text-dark" onclick="nextStep()">確認クイズへ</button>
+        </div>
+    </div>
+
+    <div id="step-4" class="lesson-step d-none quiz-section">
+        <h2 class="h4">ステップ 4：超スモール確認クイズ！</h2>
+        <p class="lead">この3つの問いに答えられたら、この単元は**マスター**です！</p>
+        
+        <div class="mb-3">
+            <p>Q1. 影ができるのは、光がどのような性質を持っているからですか？</p>
+            <input type="text" class="form-control" id="q1-answer" placeholder="漢字3文字で答えましょう">
+            <button class="btn btn-sm btn-outline-secondary mt-2" onclick="checkQuiz(1, '直進する')">答え合わせ</button>
+            <p id="q1-result" class="mt-2"></p>
+        </div>
+
+        <div class="mb-3">
+            <p>Q2. 鏡に光を当てたとき、**入射角**と**反射角**の関係として**正しい**ものは？</p>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="q2" id="q2a" value="同じ">
+                <label class="form-check-label" for="q2a">入射角と反射角は同じである</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="q2" id="q2b" value="反射角が大きい">
+                <label class="form-check-label" for="q2b">反射角の方が必ず大きくなる</label>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary mt-2" onclick="checkQuiz(2, '同じ')">答え合わせ</button>
+            <p id="q2-result" class="mt-2"></p>
+        </div>
+
+        <div class="text-center mt-4">
+            <button class="btn btn-lg btn-warning text-dark d-none" id="finish-btn" onclick="finishLesson()">🥳 単元クリア！</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const totalSteps = 4;
+    let currentStep = 1;
+    let correctQuizzes = 0;
+    const studentName = "太郎"; // プレイヤー名
+
+    // ステップ遷移関数
+    function nextStep() {
+        document.getElementById(`step-${currentStep}`).classList.add('d-none');
+        currentStep++;
+        const percentage = (currentStep / totalSteps) * 100;
+        
+        const progressBar = document.getElementById('lesson-progress');
+        progressBar.style.width = percentage + '%';
+        progressBar.textContent = `ステップ ${currentStep}/${totalSteps}`;
+
+        if (currentStep <= totalSteps) {
+            document.getElementById(`step-${currentStep}`).classList.remove('d-none');
+        }
+    }
+
+    // クイズチェック関数
+    function checkQuiz(qNum, correctAnswer) {
+        const resultElement = document.getElementById(`q${qNum}-result`);
+        let userAnswer;
+
+        if (qNum === 1) {
+            // Q1は「直進」または「光が直進する」でも正解にする（柔軟性を持たせる）
+            userAnswer = document.getElementById('q1-answer').value.replace(/\s/g, ''); 
+            if (userAnswer.includes("直進") && !userAnswer.includes("しない")) {
+                userAnswer = '直進する'; // 正解扱いにする
+            }
+        } else if (qNum === 2) {
+            const radios = document.getElementsByName('q2');
+            for (const radio of radios) {
+                if (radio.checked) {
+                    userAnswer = radio.value;
+                    break;
+                }
+            }
+        }
+
+        if (userAnswer === correctAnswer) {
+            resultElement.innerHTML = '🎉 **正解です！** 素晴らしい！';
+            resultElement.className = 'mt-2 text-success fw-bold';
+            if (document.getElementById(`q${qNum}-result`).dataset.checked !== 'true') {
+                correctQuizzes++;
+                document.getElementById(`q${qNum}-result`).dataset.checked = 'true';
+            }
+        } else {
+            resultElement.innerHTML = `🤔 **残念！** もう一度ステップを見て、考え直してみましょう！`;
+            resultElement.className = 'mt-2 text-danger fw-bold';
+        }
+
+        // 全て正解したらクリアボタン表示
+        if (correctQuizzes >= 2) {
+            document.getElementById('finish-btn').classList.remove('d-none');
+        }
+    }
+
+    // レッスン完了関数
+    function finishLesson() {
+        alert(`${studentName}さん、単元「光の進み方」クリアおめでとうございます！今日もよく頑張りました！`);
+        // window.location.href = 'home.html';
+    }
+
+    // 初期化（最初のステップのみ表示）
+    window.addEventListener("DOMContentLoaded", () => {
+        document.getElementById(`step-1`).classList.remove('d-none');
+    });
+</script>
+</body>
+</html>

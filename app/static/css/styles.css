@@ -1,0 +1,243 @@
+/* 全体の基本設定 */
+body {
+    font-family: "Meiryo", sans-serif;
+    background: #f7f7f7;
+    padding: 30px;
+}
+
+.container {
+    width: 900px;
+    margin: 0 auto;
+}
+
+/* 見出し */
+h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+    color: #222;
+}
+
+h2 {
+    font-size: 20px;
+    margin: 20px 0 12px 0;
+}
+
+/* --- AIメッセージ枠 --- */
+.ai-message {
+    background: #f0f6ff;
+    border: 1px solid #c5d7ff;
+    padding: 16px 20px;
+    margin: 0 0 24px 0;
+    border-radius: 6px;
+}
+
+.ai-message h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.ai-buttons {
+    margin-top: 12px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* --- 単元一覧テーブル --- */
+.unit-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.unit-table th {
+    background: #2d62f4;
+    color: #ffffff;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.unit-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+}
+
+.unit-table tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.unit-table tr:hover {
+    background: #f0f4ff;
+}
+
+.unit-title-cell a {
+    text-decoration: none;
+    color: #1459d6;
+    font-weight: 500;
+}
+
+.unit-title-cell a:hover {
+    text-decoration: underline;
+}
+
+/* 状態のセル */
+.status-cell {
+    text-align: center;
+    color: #666;
+}
+
+/* --- 汎用ボタン --- */
+.btn {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+.btn-primary {
+    background: #2d62f4;
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #4caf50;
+    color: #fff;
+}
+
+.btn-test {
+    background: #ff9800;
+    color: #fff;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+/* ===========================
+   単元一覧テーブルのレイアウト調整
+   =========================== */
+
+.unit-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    table-layout: fixed;          /* 列幅を固定して重なりを防ぐ */
+}
+
+.unit-table th,
+.unit-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    text-align: center;
+}
+
+.unit-table th {
+    background: #2d62f4;
+    color: #fff;
+}
+
+/* 列ごとの幅（No / コード / 単元名 / 状態 / 復習 / テスト / 進む） */
+.unit-table th:nth-child(1),
+.unit-table td:nth-child(1) { width: 7%; }   /* No */
+.unit-table th:nth-child(2),
+.unit-table td:nth-child(2) { width: 10%; }  /* コード */
+.unit-table th:nth-child(3),
+.unit-table td:nth-child(3) { width: 40%; }  /* 単元名 */
+.unit-table th:nth-child(4),
+.unit-table td:nth-child(4) { width: 10%; }  /* 状態 */
+.unit-table th:nth-child(5),
+.unit-table td:nth-child(5),
+.unit-table th:nth-child(6),
+.unit-table td:nth-child(6),
+.unit-table th:nth-child(7),
+.unit-table td:nth-child(7) { width: 11%; }  /* 各ボタン */
+
+.unit-title-cell {
+    text-align: left;
+}
+
+.status-cell {
+    font-weight: bold;
+}
+.status-done { color: #1e7e34; }   /* 学習済み */
+.status-notyet { color: #888; }    /* 未学習 */
+
+/* ===========================
+   ボタンの共通デザイン
+   （歴史ページと同じイメージ）
+   =========================== */
+
+.btn {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    white-space: nowrap;  /* 文字折り返しで高さが変にならないように */
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+.btn-primary {
+    background: #1d68d9;          /* 「この単元に進む」など */
+}
+.btn-primary:hover {
+    background: #1550a8;
+}
+
+.btn-secondary {
+    background: #28a745;          /* 「復習する」ボタン */
+}
+.btn-secondary:hover {
+    background: #1e7e34;
+}
+
+.btn-test {
+    background: #f39c12;          /* 「テスト」ボタン */
+}
+.btn-test:hover {
+    background: #d98206;
+}
+/* ===========================
+   光の反射クイズ：図の①②③ラベル位置調整
+   =========================== */
+
+/* ①②③の行の高さ＆並び */
+.diagram-label-item {
+    margin-bottom: 18px;      /* 各ラベル行の余白を広めに */
+    display: flex;
+    align-items: center;
+}
+
+/* ①・②・③の丸数字と空欄の間に少し余白 */
+.diagram-number {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+/* ③ の行だけ少し下にずらして、図の中の「③」と重ならないようにする */
+.diagram-label-item:nth-child(3) {
+    margin-top: 20px;
+}
+
+/* 空欄を少し右に逃がす（③の文字との重なり防止） */
+.diagram-label-item .blank {
+    margin-left: 6px;
+}

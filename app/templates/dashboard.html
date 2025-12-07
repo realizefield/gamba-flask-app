@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}学習メニュー | GAMBA{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>テスト生 さん、ようこそ。</h1>
+
+    <p>学習なさる科目をクリックしてください。学習が開始されます。</p>
+
+    <h2>学習科目</h2>
+
+    <div>
+        {% for subject in subjects %}
+            <a href="{{ url_for('subject_menu', subject_id=subject.id) }}"
+               class="btn btn-outline">
+                {{ subject.name }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <div>
+        <a href="{{ url_for('logout') }}" class="btn btn-secondary">
+            ログアウト
+        </a>
+    </div>
+</div>
+{% endblock %}

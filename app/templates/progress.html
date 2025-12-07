@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}{{ subject.name }}：学習進度{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ subject.name }} の学習進度</h1>
+    <p>各単元の学習状況と最新のスコアを色付きで表示します。</p>
+
+    {% if data %}
+        <table class="progress-table">
+            <thead>
+                <tr>
+                    <th style="width: 45%;">単元</th>
+                    <th style="width: 20%;">学習状況</th>
+                    <th style="width: 15%;">最新スコア</th>
+                    <th style="width: 20%;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                    <tr>
+                        <!-- 単元名 -->
+                        <td>
+                            {{ row.unit.order }}. {{ row.unit.title }}
+                        </td>
+
+                        <!-- ステータス（色付きラベル） -->
+                        <td>
+                            <span class="status-badge
+                                {% if row.status == '未学習' %}
+                                    status-unstarted
+                                {% elif row.status == '学習中' %}
+                                    status-learning
+                                {% elif row.status == '修了' %}
+                                    status-complete
+                                {% endif %}
+                            ">
+                                {{ row.status }}
+                            </span>
+                        </td>
+
+                        <!-- スコア -->
+                        <td>
+                            {% if row.score == '-' %}
+                                -
+                            {% else %}
+                                {{ row.score }} 点
+                            {% endif %}
+                        </td>
+
+                        <!-- ボタン -->
+                        <td>
+                            {% if row.status == '未学習' %}
+                                <a href="{{ url_for('unit_intro', unit_id=row.unit.id) }}"
+                                   class="btn btn-secondary">
+                                    学習を始める
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('unit_intro', unit_id=row.unit.id) }}"
+                                   class="btn btn-outline">
+                                    導入から復習
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>まだ進度データがありません。新しい単元を学習すると、ここに表示されます。</p>
+    {% endif %}
+
+    <div style="margin-top: 16px;">
+        <a href="{{ url_for('subject_menu', subject_id=subject.id) }}" class="btn btn-outline">
+            科目メニューに戻る
+        </a>
+    </div>
+</div>
+{% endblock %}

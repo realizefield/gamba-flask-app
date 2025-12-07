@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数学 1-1：正の数・負の数 - GAMBA2</title>
+  
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    /* 数学テーマ（グリーン系） */
+    :root {
+      --main-color: #198754; /* Success Green */
+      --light-green: #e6fff0;
+    }
+    body {
+      font-family: "Yu Gothic", "Meiryo", sans-serif;
+      background-color: #f5f5f5;
+      padding: 20px 0;
+    }
+    .container {
+      max-width: 800px;
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: var(--main-color);
+      border-left: 5px solid var(--main-color);
+      padding-left: 10px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+    /* AI解説ボックス */
+    .ai-explanation {
+      background-color: var(--light-green);
+      border-left: 4px solid var(--main-color);
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+    .hook-section {
+      background-color: #f7f7f7;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border: 1px dashed #ccc;
+    }
+    .progress-bar-container {
+      height: 20px;
+      margin-bottom: 20px;
+    }
+    .quiz-section {
+      border-top: 2px solid var(--main-color);
+      padding-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <span class="badge bg-success fs-6">中学数学 1-1</span>
+    <a href="home.html" class="btn btn-sm btn-outline-success">単元一覧へ戻る</a>
+  </div>
+  
+  <h1>正の数・負の数：なぜマイナスが必要？日常生活の意外なルール</h1>
+
+    <div class="progress progress-bar-container">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" id="lesson-progress">ステップ 1/4</div>
+  </div>
+
+  ---
+
+    <div id="step-1" class="lesson-step">
+    <h2 class="h4">ステップ 1：なぜマイナスが必要なの？</h2>
+    <div class="hook-section">
+      <p class="lead">私たちは普段、**「基準」**を決めて物事を測っています。</p>
+      <p>例えば、天気予報を見てみましょう。今日の気温が「**-3℃**」だったとします。これは「**0℃**」という基準から、**マイナス側（低い側）に3つ進んだ**ことを示しています。</p>
+    </div>
+    
+    <div class="ai-explanation">
+      <strong>AIの解説：</strong>
+      <p>数学でいう **「正の数（＋）」** や **「負の数（−）」** は、「**ゼロという基準**」から、どちらの方向にどれだけ離れているかを表すための便利な道具なんです。</p>
+      <p>温度だけでなく、エレベーターの**地下階**や、**借金（持っているお金がゼロより少ない状態）**など、私たちの生活はマイナスだらけですよ！</p>
+    </div>
+    
+    <div class="text-end">
+      <button class="btn btn-success" onclick="nextStep()">ステップ 2 へ</button>
+    </div>
+  </div>
+
+    <div id="step-2" class="lesson-step d-none">
+    <h2 class="h4">ステップ 2：正の数と負の数の分け方</h2>
+    
+    <div class="ai-explanation">
+      <strong>AIの解説：</strong>
+      <ul>
+        <li>**正の数（プラスの数）**: **0より大きい**数。記号は**＋**をつけますが、普段は省略することが多いです。（例：5 → +5）</li>
+        <li>**負の数（マイナスの数）**: **0より小さい**数。必ず**−**の記号をつけます。（例：−3, −1.5）</li>
+        <li>**0（ゼロ）**: **正の数でも、負の数でもありません**。ちょうど真ん中の「基準」です。</li>
+      </ul>
+    </div>
+
+    <p class="mt-3">負の数は、基準（0）から遠ざかるほど**小さく**なります。つまり、「−10」は「−1」よりずっと小さい数です。借金が大きいほど、大変なのと同じですね！</p>
+    
+    <div class="text-end">
+      <button class="btn btn-success" onclick="nextStep()">ステップ 3 へ</button>
+    </div>
+  </div>
+
+    <div id="step-3" class="lesson-step d-none">
+    <h2 class="h4">ステップ 3：数直線で視覚化！</h2>
+    
+    <p>正の数・負の数の関係は、**数直線**で見ると一目瞭然です。真ん中の**0を基準**にして、右側が正（プラス）、左側が負（マイナス）になります。</p>
+    
+        <div class="text-center my-4 p-3 border rounded"></div>
+    
+    <div class="ai-explanation">
+      **AIのヒント：**
+      <p>数直線は、右に進むほど数が**大きく**なり、左に進むほど数が**小さく**なります。このイメージを持てれば、マイナスの数の大小もすぐにわかりますよ！</p>
+    </div>
+    
+    <div class="text-end">
+      <button class="btn btn-success" onclick="nextStep()">確認クイズへ</button>
+    </div>
+  </div>
+
+    <div id="step-4" class="lesson-step d-none quiz-section">
+    <h2 class="h4">ステップ 4：超スモール確認クイズ！</h2>
+    <p class="lead">この3つの問いに答えられたら、この単元は**マスター**です！</p>
+    
+        <div class="mb-3">
+      <p>Q1. 「**貯金が300円減った**」という状況を、負の数を使って表すと？</p>
+      <input type="text" class="form-control" id="q1-answer" placeholder="例: -100">
+      <button class="btn btn-sm btn-outline-secondary mt-2" onclick="checkQuiz(1, '-300')">答え合わせ</button>
+      <p id="q1-result" class="mt-2"></p>
+    </div>
+
+        <div class="mb-3">
+      <p>Q2. 次の数の中で、**最も小さい**数はどれですか？</p>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q2" id="q2a" value="-5">
+        <label class="form-check-label" for="q2a">−5</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q2" id="q2b" value="0">
+        <label class="form-check-label" for="q2b">0</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="q2" id="q2c" value="3">
+        <label class="form-check-label" for="q2c">＋3</label>
+      </div>
+      <button class="btn btn-sm btn-outline-secondary mt-2" onclick="checkQuiz(2, '-5')">答え合わせ</button>
+      <p id="q2-result" class="mt-2"></p>
+    </div>
+
+    <div class="text-center mt-4">
+      <button class="btn btn-lg btn-success d-none" id="finish-btn" onclick="finishLesson()">🥳 単元クリア！</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const totalSteps = 4;
+  let currentStep = 1;
+  let correctQuizzes = 0;
+  const studentName = "太郎"; // プレイヤー名
+
+  // ステップ遷移関数
+  function nextStep() {
+    document.getElementById(`step-${currentStep}`).classList.add('d-none');
+    currentStep++;
+    const percentage = (currentStep / totalSteps) * 100;
+    
+    const progressBar = document.getElementById('lesson-progress');
+    progressBar.style.width = percentage + '%';
+    progressBar.textContent = `ステップ ${currentStep}/${totalSteps}`;
+
+    if (currentStep <= totalSteps) {
+      document.getElementById(`step-${currentStep}`).classList.remove('d-none');
+    }
+  }
+
+  // クイズチェック関数
+  function checkQuiz(qNum, correctAnswer) {
+    const resultElement = document.getElementById(`q${qNum}-result`);
+    let userAnswer;
+
+    if (qNum === 1) {
+      userAnswer = document.getElementById('q1-answer').value.replace(/\s/g, ''); // 空白を削除
+    } else if (qNum === 2) {
+      const radios = document.getElementsByName('q2');
+      for (const radio of radios) {
+        if (radio.checked) {
+          userAnswer = radio.value;
+          break;
+        }
+      }
+    }
+
+    if (userAnswer === correctAnswer) {
+      resultElement.innerHTML = '🎉 **正解です！** 素晴らしい！';
+      resultElement.className = 'mt-2 text-success fw-bold';
+      if (document.getElementById(`q${qNum}-result`).dataset.checked !== 'true') {
+        correctQuizzes++;
+        document.getElementById(`q${qNum}-result`).dataset.checked = 'true';
+      }
+    } else {
+      resultElement.innerHTML = `🤔 **残念！** 正解は **${correctAnswer}** でした。もう一度ステップ 2 を見てみましょう！`;
+      resultElement.className = 'mt-2 text-danger fw-bold';
+    }
+
+    // 全て正解したらクリアボタン表示
+    if (correctQuizzes >= 2) {
+      document.getElementById('finish-btn').classList.remove('d-none');
+    }
+  }
+
+  // レッスン完了関数
+  function finishLesson() {
+    alert(`太郎さん、単元「正の数・負の数」クリアおめでとうございます！これで次の単元に進めますね！`);
+    // 実際には、進捗をサーバーに送信し、単元一覧 (home.html) に遷移します。
+    // window.location.href = 'home.html';
+  }
+
+  // 初期化（最初のステップのみ表示）
+  window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById(`step-1`).classList.remove('d-none');
+  });
+</script>
+</body>
+</html>

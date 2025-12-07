@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>数学GAMBA 学習システム</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div class="container">
+
+    <h1>数学GAMBA</h1>
+
+    <!-- AIメッセージ枠 -->
+    <section class="ai-message">
+        <h2>AIからのメッセージ</h2>
+
+        {% if progress %}
+            <p>
+                {{ progress["student_name"] }}さん、前回は「{{ progress["last_unit_name"] }}（{{ progress["last_unit_code"] }}）」の
+                {{ progress["last_action"] }}をしました。（{{ progress["last_date"] }}）<br>
+                今日はどうしますか？
+            </p>
+            <div class="ai-buttons">
+                <button class="btn btn-secondary">前回の単元を復習する</button>
+                <button class="btn btn-test">前回の確認テストをやり直す</button>
+                <button class="btn btn-primary">次の単元に進む</button>
+            </div>
+        {% else %}
+            <p>
+                はじめまして！ まだ学習履歴がありません。最初の単元から始めましょう。
+            </p>
+            <div class="ai-buttons">
+                <button class="btn btn-primary">最初の単元から学習を始める</button>
+            </div>
+        {% endif %}
+    </section>
+
+    <h2>学習単元一覧</h2>
+
+    <table class="unit-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>コード</th>
+                <th>単元名</th>
+                <th>状態</th>
+                <th>復習する</th>
+                <th>確認テスト</th>
+                <th>この単元に進む</th>
+            </tr>
+        </thead>
+       <tbody>
+    {# units を順番に回す。番号は loop.index で取る #}
+    {% for u in units %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ u["code"] }}</td>
+        <td class="unit-title-cell">
+            <a href="{{ url_for('unit_page', code=u['code']) }}">{{ u["title"] }}</a>
+        </td>
+        <td class="status-cell">未学習</td>
+        <td>
+            <a href="#" class="btn btn-secondary btn-sm">復習</a>
+        </td>
+        <td>
+            <a href="#" class="btn btn-test btn-sm">テスト</a>
+        </td>
+        <td>
+            <a href="{{ url_for('unit_page', code=u['code']) }}" class="btn btn-primary btn-sm">
+                この単元に進む
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+    </table>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ subject.name }}：{{ unit.title }}（導入）{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ subject.name }}：{{ unit.title }}（導入）</h1>
+
+    {% if intro_img %}
+        <div>
+            <img src="{{ url_for('static', filename='img/' + intro_img) }}"
+                 alt="導入" style="max-width:100%; height:auto;">
+        </div>
+    {% else %}
+        <p>この単元の導入画像はまだ登録されていません。</p>
+    {% endif %}
+
+    <hr>
+    <a href="{{ url_for('unit_example', unit_id=unit.id) }}" class="btn btn-secondary">
+        例題へ進む
+    </a>
+    <a href="{{ url_for('subject_menu', subject_id=subject.id) }}" class="btn btn-outline">
+        科目メニューに戻る
+    </a>
+</div>
+{% endblock %}

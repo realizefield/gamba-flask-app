@@ -1,0 +1,143 @@
+{
+  "title": "宮崎大学 過去問：インターネットと孤独感",
+  "sentences": [
+    "A new study from an American university says that using the Internet for even a few hours a week makes people feel (1).",
+    "Ninety-three families who used the Internet at home were studied for two years, and their emotional health was measured.",
+    "(2) Those studied reported a decrease in communication with family and friends.",
+    "Researchers said that this lessening of communication related directly to the amount of time spent using the Internet.",
+    "One researcher said that this is because the people using the Internet during the study spent less time in important personal relationships with family and friends.",
+    "\"With less interpersonal communication comes a greater feeling of loneliness, and loneliness causes sadness,\" noted one researcher involved in the study.",
+    "William Scherlis, director of the university's Informational Technology Center and research team member, said the team was (3) by the results of the study.",
+    "He said that the research team members had expected Internet users to feel happier and more involved with a wider range of people because using the Internet is an activity that involves communication.",
+    "Should the results of this study cause concern?",
+    "Mr. Scherlis said it would be wrong to decide that the Internet is a bad thing; however, he urged people to use good judgment about how they use it.",
+    "He suggested, for example, placing the computer in a center of activity in the home so that the user would not be alone in a room away from other people.",
+    "He also (4) suggested that people limit the amount of time they spend on the Internet.",
+    "The researchers are planning to continue their research in order to find out more about the effects of the Internet.",
+    "They would also like to learn if watching television causes the same effects."
+  ],
+  "translations": [
+    "アメリカのある大学による新しい研究によれば、インターネットを週に数時間使うだけでも、人は（1）と感じるようになるという。",
+    "家庭でインターネットを使っている93世帯が2年間調査され、その精神的な健康が測定された。",
+    "(2) 調査対象者たちは、家族や友人とのコミュニケーションの減少を報告した。",
+    "研究者らは、このコミュニケーションの減少は、インターネットの使用に費やした時間と直接関連していると述べた。",
+    "ある研究者は、これは、研究中にインターネットを使っている人々が、家族や友人との重要な個人的な人間関係に費やす時間が少なくなったためだと述べた。",
+    "人と人とのコミュニケーションが減ると、より大きな孤独感が伴い、そして孤独は悲しさを引き起こすと、その研究に関わったある研究者は指摘した。",
+    "同大学の情報技術センター所長で調査チームのメンバーであるウィリアム・シャーリス氏は、チームがその研究結果に（3）させられたと述べた。",
+    "彼は、研究チームのメンバーたちは、インターネットの利用はコミュニケーションを伴う活動であるため、インターネット利用者はより幸せに、より幅広い人々と関わりを持つだろうと予想していた、と述べた。",
+    "この研究結果は懸念を引き起こすべきだろうか。",
+    "シャーリス氏は、インターネットが悪いものだと断定するのは間違いであろうと述べた。しかしながら、彼は人々にインターネットの利用方法について良識ある判断をするよう促した。",
+    "例えば、彼は、利用者が他の人から離れた部屋で一人にならないように、コンピューターを家庭の活動の中心に置くことを提案した。",
+    "(4) 彼はまた、人々がインターネットに費やす時間を制限することを提案した。",
+    "研究者たちは、インターネットの影響についてさらに知るために、研究を続けることを計画している。",
+    "彼らはまた、テレビを見ることが同じ影響を引き起こすかどうかも知りたいと思っている。"
+  ],
+  "vocab": {
+    "emotional": {
+      "reading": "エ【モ】ウショナル",
+      "meaning": "感情的な、精神的な",
+      "example": "their emotional health was measured."
+    },
+    "decrease": {
+      "reading": "ディ【ク】リース",
+      "meaning": "減少、低下",
+      "example": "a decrease in communication"
+    },
+    "communication": {
+      "reading": "コミュ【ニ】ケーション",
+      "meaning": "連絡、意思の疎通",
+      "example": "communication with family and friends"
+    },
+    "lessening": {
+      "reading": "【レ】スニング",
+      "meaning": "少なくすること、減少",
+      "example": "this lessening of communication"
+    },
+    "related": {
+      "reading": "リ【レ】イティド",
+      "meaning": "関連した、関係した",
+      "example": "related directly to the amount of time"
+    },
+    "interpersonal": {
+      "reading": "【イ】ンター【パ】ースナル",
+      "meaning": "対人関係の、個人間の",
+      "example": "less interpersonal communication"
+    },
+    "loneliness": {
+      "reading": "【ロ】ウンリネス",
+      "meaning": "孤独、寂しさ",
+      "example": "a greater feeling of loneliness"
+    },
+    "sadness": {
+      "reading": "【サ】ッドネス",
+      "meaning": "悲しさ、悲しみ",
+      "example": "loneliness causes sadness"
+    },
+    "involved": {
+      "reading": "イン【ヴォ】ルヴド",
+      "meaning": "関わっている、参加している",
+      "example": "more involved with a wider range of people"
+    },
+    "director": {
+      "reading": "ダィ【レ】クター",
+      "meaning": "所長、責任者",
+      "example": "director of the university's Center"
+    },
+    "expected": {
+      "reading": "イク【スペ】クティド",
+      "meaning": "予想した、期待した",
+      "example": "had expected Internet users to feel happier"
+    },
+    "wider": {
+      "reading": "【ワ】イダー",
+      "meaning": "より広い",
+      "example": "a wider range of people"
+    },
+    "range": {
+      "reading": "【レ】インジ",
+      "meaning": "範囲、幅",
+      "example": "a wider range of people"
+    },
+    "concern": {
+      "reading": "コン【サ】ーン",
+      "meaning": "懸念、心配",
+      "example": "cause concern"
+    },
+    "urged": {
+      "reading": "【ア】ージド",
+      "meaning": "強く勧めた、促した",
+      "example": "he urged people to use good judgment"
+    },
+    "judgment": {
+      "reading": "【ジャ】ッジメント",
+      "meaning": "判断、意見",
+      "example": "use good judgment about how they use it"
+    },
+    "suggested": {
+      "reading": "サ【ジェ】スティド",
+      "meaning": "提案した",
+      "example": "He also suggested that people limit ..."
+    },
+    "limit": {
+      "reading": "【リ】ミット",
+      "meaning": "制限する、限定する",
+      "example": "limit the amount of time they spend"
+    }
+  },
+  "structures": [
+    "【文構造】\nA new study(S) says(V) that 〜 の形で、「新しい研究によれば〜だと言っている」という文です。\nthat節の中では、using the Internet ... makes(V) people(O) feel(C) (1) となっており、make O C「O を C の状態にする」の形です。\n\n【読解のポイント】\n・make people feel (1): 「人々を（1）のように感じさせる」。(1) には alone and sad が入ります。\n・for even a few hours a week: 「週にほんの数時間でも」と、少ない時間でも影響が出ることを強調しています。",
+    "【文構造】\nNinety-three families(S) were studied(V) for two years, and their emotional health(S') was measured(V') という受動態が2つ and で並んだ文です。\n\n【読解のポイント】\n・were studied: 「調査された」。researchers studied them を受動態にしています。\n・emotional health: 「精神的な健康」。このあとに出てくる『孤独』『悲しさ』とつながる重要な語です。",
+    "【文構造】\nThose studied(S) reported(V) a decrease(O) in communication with family and friends.\n\n【読解のポイント】\n・Those studied: 「調査対象者たち」。people who were studied が短くなった形です。\n・a decrease in communication: 「コミュニケーションの減少」。in のあとの名詞を修飾しています。",
+    "【文構造】\nResearchers(S) said(V) that this lessening of communication(S') related(V') directly to 〜.\n\n【読解のポイント】\n・lessening of communication: 「コミュニケーションの減少」。名詞化された形です。\n・related directly to 〜: 「〜と直接関連していた」。related to で「〜と関係がある」。directly で「直接的に」。",
+    "【文構造】\nOne researcher(S) said(V) that this is because 〜.\nthat節の中で、this is because S' V' の形になり、「これは〜だからだ」と原因を説明しています。\n\n【読解のポイント】\n・spent less time in important personal relationships: 「大切な対人関係に費やす時間が少なくなった」。less time は比較を表し、「より少ない時間」。\n・with family and friends: 「家族や友人との」。関係の対象を示しています。",
+    "【文構造】\nWith less interpersonal communication comes a greater feeling of loneliness,\nand loneliness(S) causes(V) sadness.\n前半は倒置の形で、通常は A greater feeling of loneliness comes with less interpersonal communication となる語順です。\n\n【読解のポイント】\n・with less interpersonal communication: 「対人コミュニケーションが少ないと」。\n・a greater feeling of loneliness: 「より大きな孤独感」。\n・loneliness causes sadness: 「孤独は悲しさを引き起こす」。原因と結果の関係をはっきり示しています。",
+    "【文構造】\nWilliam Scherlis(S) said(V) (that) the team was (3) by the results of the study.\n\n【読解のポイント】\n・director of ... and research team member: 「〜の所長であり、調査チームの一員でもある」。Scherlis 氏の肩書きを説明しています。\n・was (3) by the results: 受動態で、「結果に（3）させられた」。(3) には very surprised が入ります。",
+    "【文構造】\nHe said(V) that S' had expected(V') O to feel happier and more involved with a wider range of people, because 〜.\n\n【読解のポイント】\n・had expected: 過去完了で、「それより前にそう予想していた」。\n・feel happier and more involved: 「より幸せを感じ、より関わっていると感じる」。\n・a wider range of people: 「より広い範囲の人々」。",
+    "【文構造】\nShould the results of this study cause concern?\n疑問文ですが、助動詞 should が主語の前に出る形で、「もし〜なら〜だろうか？」という意味合いを含みます。\n\n【読解のポイント】\n・cause concern: 「懸念を引き起こす」。\n・全体として「この結果は本当に心配すべきものなのか？」と問いかけています。",
+    "【文構造】\nMr. Scherlis(S) said(V) it would be wrong(C) to decide that 〜; however, he urged people to 〜.\n\n【読解のポイント】\n・it would be wrong to decide that 〜: 「〜だと決めつけるのは間違いだろう」。\n・however: 「しかし」。逆接で、次に注意点・提案が続きます。\n・urged people to use good judgment: 「人々に良識ある判断をするよう強く促した」。",
+    "【文構造】\nHe suggested(V), for example, placing the computer in a center of activity 〜 so that S would not be alone.\n\n【読解のポイント】\n・suggested placing 〜: suggest + -ing で「〜することを提案した」。\n・so that the user would not be alone: 「利用者が一人にならないように」。目的を表す so that です。",
+    "【文構造】\nHe also suggested(V) that people limit(V') the amount of time they spend on the Internet.\n\n【読解のポイント】\n・suggest that S V: that節中の動詞は原形になります（仮定法的用法）。\n・limit the amount of time: 「時間を制限する」。",
+    "【文構造】\nThe researchers(S) are planning(V) to continue their research in order to find out more about the effects of the Internet.\n\n【読解のポイント】\n・are planning to continue: 「〜し続ける計画を立てている」。\n・in order to find out more about 〜: 「〜についてさらに知るために」。目的を表す表現です。",
+    "【文構造】\nThey(S) would also like(V) to learn if S' causes(V') the same effects.\n\n【読解のポイント】\n・would like to learn: 「知りたいと思っている」。\n・if watching television causes the same effects: 「テレビ視聴が同じ影響を引き起こすかどうか」。インターネットとの比較を今後調べる予定であることを示しています。"
+  ]
+}

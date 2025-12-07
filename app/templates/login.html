@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card" style="max-width: 480px; margin: 40px auto;">
+  <h2>ログイン</h2>
+  <p>GAMBA 学習システムにログインします。</p>
+  <form method="post">
+    <div style="margin-bottom: 8px;">
+      <label>メールアドレス</label><br>
+      <input type="email" name="email" style="width:100%; padding:6px;">
+    </div>
+    <div style="margin-bottom: 8px;">
+      <label>パスワード</label><br>
+      <input type="password" name="password" style="width:100%; padding:6px;">
+    </div>
+    <button type="submit" class="btn block">ログイン</button>
+  </form>
+  <p style="margin-top:8px; font-size:0.8rem; color:#666;">
+    テスト用：メール <code>test@example.com</code> ／ パスワード <code>test1234</code>
+  </p>
+</div>
+{% endblock %}

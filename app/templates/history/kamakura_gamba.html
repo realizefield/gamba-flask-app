@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>鎌倉時代GAMBA：武士が主役になった150年間</title>
+<style>
+  body {
+    font-family: "Meiryo", sans-serif;
+    max-width: 960px;
+    margin: 20px auto;
+    line-height: 1.8;
+    background-color: #f4f4f9;
+    font-size: 16px;
+  }
+
+  h1 {
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    margin-top: 18px;
+    margin-bottom: 8px;
+    font-size: 20px;
+  }
+
+  /* 到達バー（①〜⑤はどこでもクリックOK） */
+  .step-bar {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0 20px 0;
+    justify-content: space-between;
+  }
+  .step {
+    flex: 1;
+    text-align: center;
+    padding: 6px 4px;
+    border-radius: 999px;
+    background-color: #ddd;
+    font-size: 13px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+  }
+  .step::before {
+    content: attr(data-step);
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 50%;
+    background-color: #aaa;
+    color: #fff;
+    font-size: 12px;
+    margin-right: 4px;
+  }
+  .step.active {
+    background-color: #e0f0ff;
+  }
+  .step.done {
+    background-color: #b3e5fc;
+  }
+  .step.done::before {
+    background-color: #0288d1;
+  }
+
+  /* 各段落のカード */
+  .section {
+    display: none;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid #ccc;
+    margin-bottom: 16px;
+  }
+  .section.active {
+    display: block;
+  }
+
+  .question-text {
+    margin-bottom: 12px;
+  }
+
+  .blank {
+    display: inline-block;
+    min-width: 90px;
+    min-height: 26px;
+    border-bottom: 2px solid #666;
+    margin: 0 4px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #fff;
+  }
+  .blank.correct {
+    background-color: #ccf;
+    border-bottom-color: #339;
+  }
+
+  .word-bank-wrapper {
+    margin-top: 8px;
+  }
+  .word-bank-title {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .word-bank {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    min-height: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background-color: #fafafa;
+  }
+  .word-chip {
+    padding: 8px 12px;
+    border-radius: 18px;
+    border: 1px solid #666;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+  }
+  .word-chip.used {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .word-chip.selected-chip {
+    border-color: #1976d2;
+    background-color: #e3f2fd;
+    box-shadow: 0 0 0 2px #bbdefb;
+  }
+
+  .controls {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    background-color: #1976d2;
+    color: #fff;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  button.secondary {
+    background-color: #666;
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .result-message {
+    margin-top: 6px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  /* タイマー表示を少し大きく・枠つきに */
+  .timer-info {
+    margin-top: 8px;
+    padding: 6px 10px;
+    font-size: 15px;
+    color: #222;
+    border-radius: 6px;
+    border: 1px solid #1976d2;
+    background-color: #ffffff;
+    display: inline-block;
+  }
+
+  .explain-box {
+    margin-top: 10px;
+    padding: 8px;
+    border-left: 4px solid #1976d2;
+    background-color: #f0f4ff;
+    display: none;
+    font-size: 14px;
+  }
+
+  /* 吹き出しボタン */
+  .help-badge {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background-color: #ffecb3;
+    border: 1px solid #f0ad4e;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* ポップアップ */
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.3);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  .popup-box {
+    background-color: #fff;
+    max-width: 520px;
+    width: 90%;
+    padding: 16px 18px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .popup-title {
+    font-weight: bold;
+    margin-bottom: 6px;
+    font-size: 15px;
+  }
+  .popup-close-btn {
+    margin-top: 10px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: none;
+    background-color: #1976d2;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<h1>鎌倉時代：武士が主役になった150年間</h1>
+
+<div class="step-bar">
+  <div class="step active" data-step="1">① 時代の始まり</div>
+  <div class="step" data-step="2">② 幕府の確立</div>
+  <div class="step" data-step="3">③ 執権政治と承久の乱</div>
+  <div class="step" data-step="4">④ 泰時の改革</div>
+  <div class="step" data-step="5">⑤ 元寇と衰退</div>
+</div>
+
+<!-- ① 時代の始まり -->
+<div class="section active" data-section="1">
+  <h2>1. 時代の始まり：源氏の復活と平氏の滅亡</h2>
+  <div class="question-text">
+    12世紀後半、貴族にかわって武士が政治の表舞台に登場しました。そのきっかけとなったのは、源氏と平氏の間で起こった二つの戦いです。<br><br>
+    保元の乱（1156年）と平治の乱（1159年）では、どちらの乱でも
+    <span class="blank" data-section="1" data-blank-id="A"></span>
+    率いる平氏が勝利しました。<br><br>
+
+    平治の乱で敗れた源氏の棟梁
+    <span class="blank" data-section="1" data-blank-id="B"></span>
+    は殺されてしまいましたが、その息子である
+    <span class="blank" data-section="1" data-blank-id="C"></span>
+    は命を助けられ、伊豆に流されました。
+    <span class="help-badge" onclick="showPopup('heike_milk')">💬 平清盛の乳母の願い</span>
+    <br><br>
+
+    清盛は、1167年に武士として初めて
+    <span class="blank" data-section="1" data-blank-id="D"></span>
+    に就任し、平氏の全盛期を築きました。しかし、その贅沢な暮らしぶりは貴族や寺社勢力の反感を買い、「平氏にあらずんば人にあらず」とまで言われる傲慢な支配は長くは続きませんでした。<br><br>
+
+    頼朝は伊豆で時を待ち、1180年に以仁王の令旨をきっかけに挙兵し、
+    <span class="blank" data-section="1" data-blank-id="E"></span>
+    を経て、1185年に弟の
+    <span class="blank" data-section="1" data-blank-id="F"></span>
+    らの活躍により、
+    <span class="blank" data-section="1" data-blank-id="G"></span>
+    で平氏を滅亡させました。
+  </div>
+
+  <div class="word-bank-wrapper">
+    <div class="word-bank-title">【語群】（チャレンジ開始を押すとここに語句が出ます）</div>
+    <div class="word-bank" data-section="1"></div>
+  </div>
+
+  <div class="controls">
+    <button class="start-btn" data-section="1">チャレンジ開始</button>
+    <button class="check-btn" data-section="1">判定</button>
+    <button class="secondary reset-btn" data-section="1">この段落をやり直す</button>
+    <button class="secondary time-reset-btn" data-section="1">時間リセット</button>
+    <button class="next-section-btn" data-section="1" disabled>次の段落へ進む ▶</button>
+    <button class="secondary explain-btn" data-section="1">【解説】を見る</button>
+  </div>
+
+  <div class="result-message" id="result-1"></div>
+  <div class="timer-info" id="timer-1">経過時間：---　（まだ記録がありません）</div>
+
+  <div class="explain-box" id="explain-1">
+    <strong>【解説】</strong><br>
+    保元の乱・平治の乱で平清盛率いる平氏が台頭し、源義朝は敗れて命を落としますが、その子の源頼朝は池禅尼のとりなしで命を助けられ、伊豆へ流されました。<br>
+    平清盛は武士として初めて太政大臣となり平氏政権の全盛期を築きましたが、その傲慢な支配は長く続かず、のちに源頼朝が挙兵して源平の戦いを起こし、弟の源義経らの活躍によって壇ノ浦の戦いで平氏を滅ぼしました。
+  </div>
+</div>
+
+<!-- ② 鎌倉幕府の確立 -->
+<div class="section" data-section="2">
+  <h2>2. 鎌倉幕府の確立：守護・地頭の誕生</h2>
+  <div class="question-text">
+    平氏を倒した後、頼朝は
+    <span class="blank" data-section="2" data-blank-id="A"></span>
+    に本拠地を置き、朝廷（ちょうてい）とは一線を画した武士による政権の樹立を目指しました。<br><br>
+
+    平氏を滅ぼした最大の功労者である
+    <span class="blank" data-section="2" data-blank-id="B"></span>
+    は、戦いの後、兄である頼朝に無断で朝廷から検非違使(けびいし)という役職を受けたため、頼朝の怒りを買いました。
+    <span class="help-badge" onclick="showPopup('angry_yoritomo')">💬 兄弟の不和：なぜ頼朝は怒ったのか？</span>
+    <br><br>
+
+    頼朝は、義経と朝廷側の源行家（ゆきいえ）を捕まえるという口実で、朝廷に全国の軍事・ 
+    <span class="blank" data-section="2" data-blank-id="C"></span>
+    権を認めさせました。<br><br>
+
+    これにより、国内の秩序維持のために
+    <span class="blank" data-section="2" data-blank-id="D"></span>
+    が、荘園や公領の管理・
+    <span class="blank" data-section="2" data-blank-id="E"></span>
+    の取り立てのために
+    <span class="blank" data-section="2" data-blank-id="F"></span>
+    が設置されました。<br><br>
+
+    頼朝と家臣の武士たちは
+    <span class="blank" data-section="2" data-blank-id="G"></span>
+    と呼ばれ、頼朝から土地などの
+    <span class="blank" data-section="2" data-blank-id="H"></span>
+    を受ける代わりに、戦いのときに
+    <span class="blank" data-section="2" data-blank-id="I"></span>
+    として戦う義務を負いました。<br>
+
+    こうした主従関係にもとづく政治のしくみを
+    <span class="blank" data-section="2" data-blank-id="J"></span>
+    といいます。
+    <span class="help-badge" onclick="showPopup('feudal_system')">💬 封建制度って何？</span>
+    <br><br>
+
+    1192年、頼朝は朝廷から
+    <span class="blank" data-section="2" data-blank-id="K"></span>
+    に任命され、ここに
+    <span class="blank" data-section="2" data-blank-id="L"></span>
+    が正式に成立しました。
+  </div>
+
+  <div class="word-bank-wrapper">
+    <div class="word-bank-title">【語群】（チャレンジ開始を押すとここに語句が出ます）</div>
+    <div class="word-bank" data-section="2"></div>
+  </div>
+
+  <div class="controls">
+    <button class="start-btn" data-section="2">チャレンジ開始</button>
+    <button class="check-btn" data-section="2">判定</button>
+    <button class="secondary reset-btn" data-section="2">この段落をやり直す</button>
+    <button class="secondary time-reset-btn" data-section="2">時間リセット</button>
+    <button class="next-section-btn" data-section="2" disabled>次の段落へ進む ▶</button>
+    <button class="secondary explain-btn" data-section="2">【解説】を見る</button>
+  </div>
+
+  <div class="result-message" id="result-2"></div>
+  <div class="timer-info" id="timer-2">経過時間：---　（まだ記録がありません）</div>
+
+  <div class="explain-box" id="explain-2">
+    <strong>【解説】</strong><br>
+    頼朝は鎌倉に本拠地を置き、東国武士を中心とした新しい武士政権をつくりました。守護は国ごとの軍事・警察を担当し、地頭は荘園や公領の管理と年貢の取り立てを行いました。<br>
+    頼朝と家臣である御家人は、御恩（領地などの恩賞）と奉公（戦いのときに主君のために戦う義務）という関係で結ばれており、これを封建制度といいます。1192年に頼朝が征夷大将軍に任命され、鎌倉幕府が正式な政府として認められました。
+  </div>
+</div>
+
+<!-- ③ 執権政治と承久の乱 -->
+<div class="section" data-section="3">
+  <h2>3. 執権政治と承久の乱</h2>
+  <div class="question-text">
+    1199年、
+    <span class="blank" data-section="3" data-blank-id="A"></span>
+    が突然の死を迎えると、源氏の将軍は三代で途絶えました。実権を握ったのは、頼朝の妻
+    <span class="blank" data-section="3" data-blank-id="B"></span>
+    の実家である
+    <span class="blank" data-section="3" data-blank-id="C"></span>
+    でした。
+    <span class="blank" data-section="3" data-blank-id="D"></span>
+    は将軍を補佐する
+    <span class="blank" data-section="3" data-blank-id="E"></span>
+    という地位につき、日本独自の二重権力体制をつくりました。
+    <span class="help-badge" onclick="showPopup('tokimasa_shikken')">💬 北条時政と執権</span>
+    <br><br>
+
+    この状況を面白く思わなかったのが、朝廷のトップである
+    <span class="blank" data-section="3" data-blank-id="F"></span>
+    でした。
+    <span class="help-badge" onclick="showPopup('gotoba')">💬 後鳥羽上皇はどんな人？</span>
+    上皇は二代執権
+    <span class="blank" data-section="3" data-blank-id="G"></span>
+    の討伐を全国の御家人に呼びかけましたが、
+    <span class="blank" data-section="3" data-blank-id="B2"></span>
+    の演説により多くの御家人は幕府側につき、上皇の軍は敗北しました。<br><br>
+
+    1221年に起こったこの戦いを
+    <span class="blank" data-section="3" data-blank-id="H"></span>
+    といい、勝利した幕府は
+    <span class="blank" data-section="3" data-blank-id="F2"></span>
+    らを流罪にし、朝廷を監視するため京都に
+    <span class="blank" data-section="3" data-blank-id="I"></span>
+    を設置しました。<br><br>
+
+    このあと、後鳥羽上皇の土地は地頭に与えられ、荘園領主と土地の境界をめぐる係が頻発したので、荘園の土地を半分に分ける
+    <span class="blank" data-section="3" data-blank-id="J"></span>
+    という方法がとられ、地頭の権限はいっそう強くなりました。
+    <span class="help-badge" onclick="showPopup('shitaji_chubun')">💬 下地中分とは？</span>
+  </div>
+
+  <div class="word-bank-wrapper">
+    <div class="word-bank-title">【語群】（チャレンジ開始を押すとここに語句が出ます）</div>
+    <div class="word-bank" data-section="3"></div>
+  </div>
+
+  <div class="controls">
+    <button class="start-btn" data-section="3">チャレンジ開始</button>
+    <button class="check-btn" data-section="3">判定</button>
+    <button class="secondary reset-btn" data-section="3">この段落をやり直す</button>
+    <button class="secondary time-reset-btn" data-section="3">時間リセット</button>
+    <button class="next-section-btn" data-section="3" disabled>次の段落へ進む ▶</button>
+    <button class="secondary explain-btn" data-section="3">【解説】を見る</button>
+  </div>
+
+  <div class="result-message" id="result-3"></div>
+  <div class="timer-info" id="timer-3">経過時間：---　（まだ記録がありません）</div>
+
+  <div class="explain-box" id="explain-3">
+    <strong>【解説】</strong><br>
+    頼朝の死後、将軍家の力は弱まり、北条氏が執権として実権を握りました。後鳥羽上皇は幕府を倒そうとして承久の乱を起こしましたが、北条政子のよびかけに応じた御家人が幕府側について上皇軍は敗北しました。<br>
+    承久の乱の後、幕府は後鳥羽上皇らを流罪にし、京都に六波羅探題をおいて朝廷を監視しました。また、下地中分によって地頭の支配はさらに強まりました。
+  </div>
+</div>
+
+<!-- ④ 泰時の改革と御成敗式目 -->
+<div class="section" data-section="4">
+  <h2>4. 泰時の改革と武士の法律</h2>
+  <div class="question-text">
+    三代執権
+    <span class="blank" data-section="4" data-blank-id="A"></span>
+    は、
+    <span class="blank" data-section="4" data-blank-id="B"></span>
+    の後、幕府の支配を安定させるために重要な政治を行いました。
+    <span class="help-badge" onclick="showPopup('yasutoki')">💬 泰時はどんな政治をした？</span>
+    <br><br>
+
+    1232年、泰時は武士のための法律である
+    <span class="blank" data-section="4" data-blank-id="C"></span>
+    を制定しました。これは、それまでの朝廷の法律である
+    <span class="blank" data-section="4" data-blank-id="D"></span>
+    が武士には分かりにくかったため、武士の慣習にもとづいた、分かりやすく公正な法律をつくる必要があったからです。<br><br>
+
+    この法律は主に、御家人どうしの土地や相続の争いを解決するために用いられ、以後、武士の社会で長く使われました。
+  </div>
+
+  <div class="word-bank-wrapper">
+    <div class="word-bank-title">【語群】（チャレンジ開始を押すとここに語句が出ます）</div>
+    <div class="word-bank" data-section="4"></div>
+  </div>
+
+  <div class="controls">
+    <button class="start-btn" data-section="4">チャレンジ開始</button>
+    <button class="check-btn" data-section="4">判定</button>
+    <button class="secondary reset-btn" data-section="4">この段落をやり直す</button>
+    <button class="secondary time-reset-btn" data-section="4">時間リセット</button>
+    <button class="next-section-btn" data-section="4" disabled>次の段落へ進む ▶</button>
+    <button class="secondary explain-btn" data-section="4">【解説】を見る</button>
+  </div>
+
+  <div class="result-message" id="result-4"></div>
+  <div class="timer-info" id="timer-4">経過時間：---　（まだ記録がありません）</div>
+
+  <div class="explain-box" id="explain-4">
+    <strong>【解説】</strong><br>
+    北条泰時は御家人の意見をよく聞き、公平な政治を行ったことで人望を集めました。<br>
+    1232年に制定された御成敗式目は、武士社会の実情に合わせた初めての本格的な武家法であり、土地や相続をめぐる争いを解決するための基準となりました。
+  </div>
+</div>
+
+<!-- ⑤ 元寇と幕府の衰退 -->
+<div class="section" data-section="5">
+  <h2>5. 元寇と幕府の衰退</h2>
+  <div class="question-text">
+    13世紀後半、中国では
+    <span class="blank" data-section="5" data-blank-id="A"></span>
+    率いる
+    <span class="blank" data-section="5" data-blank-id="B"></span>
+    が日本に服従を要求してきました。
+    <span class="help-badge" onclick="showPopup('genko_reason')">💬 元寇の要因は？</span>
+    <br><br>
+
+    鎌倉幕府がこの要求を拒否し続けたため、1274年の文永の役と1281年の弘安の役という二度の
+    <span class="blank" data-section="5" data-blank-id="C"></span>
+    が起こりました。御家人たちは命がけで戦い、
+    <span class="blank" data-section="5" data-blank-id="D"></span>
+    と呼ばれる暴風雨の助けもあって日本は勝利しました。<br><br>
+
+    しかし、今回は外国からの防衛戦であったため、新しく奪った土地がなく、御家人に十分な
+    <span class="blank" data-section="5" data-blank-id="E"></span>
+    を与えることができませんでした。このため御家人は借金を抱え、生活が苦しくなりました。<br><br>
+
+    幕府は御家人を救うため、
+    <span class="blank" data-section="5" data-blank-id="F"></span>
+    を出し、御家人が質入れや売却した土地を元の持ち主に戻し、借金を帳消しにしようとしました。
+    <span class="help-badge" onclick="showPopup('tokuseirei')">💬 徳政令の内容は？</span>
+    <br><br>
+
+    しかし、「どうせ徳政令でチャラになる」と考えた商人などが御家人にお金を貸さなくなり、かえって御家人の生活は苦しくなりました。御家人の不満が解消されないまま、
+    <span class="blank" data-section="5" data-blank-id="G"></span>
+    の台頭により、
+    <span class="blank" data-section="5" data-blank-id="H"></span>
+    は滅亡へと向かいました。
+  </div>
+
+  <div class="word-bank-wrapper">
+    <div class="word-bank-title">【語群】（チャレンジ開始を押すとここに語句が出ます）</div>
+    <div class="word-bank" data-section="5"></div>
+  </div>
+
+  <div class="controls">
+    <button class="start-btn" data-section="5">チャレンジ開始</button>
+    <button class="check-btn" data-section="5">判定</button>
+    <button class="secondary reset-btn" data-section="5">この段落をやり直す</button>
+    <button class="secondary time-reset-btn" data-section="5">時間リセット</button>
+    <button class="next-section-btn" data-section="5" disabled>クリア！</button>
+    <button class="secondary explain-btn" data-section="5">【解説】を見る</button>
+  </div>
+
+  <div class="result-message" id="result-5"></div>
+  <div class="timer-info" id="timer-5">経過時間：---　（まだ記録がありません）</div>
+
+  <div class="explain-box" id="explain-5">
+    <strong>【解説】</strong><br>
+    フビライ・ハン率いる元は、日本に服従を求めましたが、鎌倉幕府はこれを拒否し続けました。その結果、二度の元寇が起こりました。日本は神風と呼ばれる暴風雨にも助けられて勝利しましたが、新たな領土が得られなかったため恩賞を出せず、御家人の不満が高まりました。<br>
+    徳政令は御家人を救うための措置でしたが、商人が御家人にお金を貸さなくなるなどの副作用を生み、幕府の衰退に拍車をかけました。その後、足利高氏の台頭により鎌倉幕府は滅亡へ向かいます。
+  </div>
+</div>
+
+<!-- ポップアップ -->
+<div id="popup-overlay" class="popup-overlay">
+  <div class="popup-box">
+    <div id="popup-title" class="popup-title"></div>
+    <div id="popup-body" class="popup-body"></div>
+    <button class="popup-close-btn" onclick="hidePopup()">閉じる</button>
+  </div>
+</div>
+
+<script>
+  // 各段落の答えと語群
+  const sectionData = {
+    1: {
+      answers: {
+        A: "平清盛",
+        B: "源義朝",
+        C: "源頼朝",
+        D: "太政大臣",
+        E: "源平の戦い",
+        F: "源義経",
+        G: "壇ノ浦の戦い"
+      },
+      choices: [
+        "平清盛","源義朝","源頼朝","太政大臣",
+        "源平の戦い","源義経","壇ノ浦の戦い"
+      ]
+    },
+    2: {
+      answers: {
+        A: "鎌倉",
+        B: "源義経",
+        C: "警察",
+        D: "守護",
+        E: "年貢",
+        F: "地頭",
+        G: "御家人",
+        H: "御恩",
+        I: "奉公",
+        J: "封建制度",
+        K: "征夷大将軍",
+        L: "鎌倉幕府"
+      },
+      choices: [
+        "鎌倉","源義経","警察","守護","年貢",
+        "地頭","御家人","御恩","奉公","封建制度",
+        "征夷大将軍","鎌倉幕府"
+      ]
+    },
+    3: {
+      answers: {
+        A: "源頼朝",
+        B: "北条政子",
+        C: "北条氏",
+        D: "北条時政",
+        E: "執権",
+        F: "後鳥羽上皇",
+        G: "北条義時",
+        B2:"北条政子",
+        H: "承久の乱",
+        F2:"後鳥羽上皇",
+        I: "六波羅探題",
+        J: "下地中分"
+      },
+      choices: [
+        "源頼朝","北条政子","北条氏","北条時政","執権",
+        "後鳥羽上皇","北条義時","承久の乱","六波羅探題","下地中分"
+      ]
+    },
+    4: {
+      answers: {
+        A: "北条泰時",
+        B: "承久の乱",
+        C: "御成敗式目",
+        D: "律令"
+      },
+      choices: [
+        "北条泰時","承久の乱","御成敗式目","律令"
+      ]
+    },
+    5: {
+      answers: {
+        A: "フビライ・ハン",
+        B: "元",
+        C: "元寇",
+        D: "神風",
+        E: "恩賞",
+        F: "徳政令",
+        G: "足利高氏",
+        H: "鎌倉幕府"
+      },
+      choices: [
+        "フビライ・ハン","元","元寇","神風",
+        "恩賞","徳政令","足利高氏","鎌倉幕府"
+      ]
+    }
+  };
+
+  // タイマー・状態
+  const sectionStates = {
+    1: { attempts: [], timerRunning: false, startTime: null, intervalId: null, cleared: false },
+    2: { attempts: [], timerRunning: false, startTime: null, intervalId: null, cleared: false },
+    3: { attempts: [], timerRunning: false, startTime: null, intervalId: null, cleared: false },
+    4: { attempts: [], timerRunning: false, startTime: null, intervalId: null, cleared: false },
+    5: { attempts: [], timerRunning: false, startTime: null, intervalId: null, cleared: false }
+  };
+
+  // 現在選択中の語群チップ
+  let selectedChip = null;
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function clearSelectedChip() {
+    if (selectedChip) {
+      selectedChip.classList.remove("selected-chip");
+      selectedChip = null;
+    }
+  }
+
+  function handleChipClick(chip) {
+    if (chip.classList.contains("used")) return; // すでに空欄に入っているものは選べない
+    if (selectedChip === chip) {
+      // 選択解除
+      chip.classList.remove("selected-chip");
+      selectedChip = null;
+    } else {
+      // 別のチップに選択変更
+      clearSelectedChip();
+      selectedChip = chip;
+      chip.classList.add("selected-chip");
+    }
+  }
+
+  function renderWordBank(section) {
+    const bank = document.querySelector(`.word-bank[data-section="${section}"]`);
+    if (!bank) return;
+    bank.innerHTML = "";
+    const data = sectionData[section];
+    if (!data || !data.choices) return;
+    const shuffled = shuffle(data.choices);
+    shuffled.forEach(word => {
+      const chip = document.createElement("div");
+      chip.className = "word-chip";
+      chip.textContent = word;
+      chip.dataset.word = word;
+      chip.dataset.section = section;
+      chip.addEventListener("click", () => handleChipClick(chip));
+      bank.appendChild(chip);
+    });
+  }
+
+  // はじめは「あらすじ」用に答えを全部入れておく
+  function prefillAnswers(section) {
+    const data = sectionData[section];
+    if (!data || !data.answers) return;
+    const blanks = document.querySelectorAll(`.blank[data-section="${section}"]`);
+    blanks.forEach(blank => {
+      const id = blank.dataset.blankId;
+      const correct = data.answers[id];
+      if (correct) {
+        blank.textContent = correct;
+        blank.dataset.word = correct;
+        blank.classList.remove("correct");
+      }
+    });
+  }
+
+  // ブランクのクリック：タップで語句を入れる／戻す
+  function setupBlanks() {
+    document.querySelectorAll(".blank").forEach(blank => {
+      const section = Number(blank.dataset.section);
+      blank.dataset.word = blank.dataset.word || "";
+
+      blank.addEventListener("click", () => {
+        const currentWord = blank.dataset.word || "";
+        const blankSection = Number(blank.dataset.section);
+
+        // ① 選択中の語群チップがある場合 → それをこの空欄に入れる
+        if (selectedChip) {
+          const chipSection = Number(selectedChip.dataset.section);
+          const chipWord = selectedChip.dataset.word;
+
+          // セクション違いは入れない
+          if (chipSection !== blankSection) return;
+
+          // すでに空欄に入っていた語を語群に戻す
+          if (currentWord) {
+            const oldChip = document.querySelector(
+              `.word-chip[data-section="${blankSection}"][data-word="${currentWord}"]`
+            );
+            if (oldChip) {
+              oldChip.classList.remove("used");
+            }
+          }
+
+          // 新しく語を入れる
+          blank.textContent = chipWord;
+          blank.dataset.word = chipWord;
+          blank.classList.remove("correct");
+
+          // チップ側を「使用中」に
+          selectedChip.classList.add("used");
+          selectedChip.classList.remove("selected-chip");
+          selectedChip = null;
+          return;
+        }
+
+        // ② 選択中の語群チップがない場合
+        // → もし空欄に語が入っていたら語群に戻す
+        if (currentWord) {
+          const chip = document.querySelector(
+            `.word-chip[data-section="${blankSection}"][data-word="${currentWord}"]`
+          );
+          if (chip) {
+            chip.classList.remove("used");
+          }
+          blank.textContent = "";
+          blank.dataset.word = "";
+          blank.classList.remove("correct");
+        }
+      });
+    });
+  }
+
+  // デジタル時間表示用
+  function formatElapsed(sec) {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    const mm = m.toString().padStart(2, "0");
+    const ss = s.toString().padStart(2, "0");
+    return `${mm}:${ss}`;
+  }
+
+  function updateTimerDisplay(section, runningSec = null) {
+    const el = document.getElementById(`timer-${section}`);
+    if (!el) return;
+    const state = sectionStates[section];
+
+    let line1 = "";
+    if (runningSec != null) {
+      line1 = "経過時間：" + formatElapsed(runningSec);
+    } else if (state.timerRunning && state.startTime) {
+      const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+      line1 = "経過時間：" + formatElapsed(elapsed);
+    } else {
+      line1 = "経過時間：---";
+    }
+
+    let line2 = "";
+    if (state.attempts.length === 0) {
+      line2 = "（まだ記録がありません）";
+    } else {
+      const parts = state.attempts.map((sec, idx) => `${idx + 1}回目：${sec}秒`);
+      line2 = "（記録：" + parts.join(" ／ ") + "）";
+    }
+
+    el.textContent = line1 + "　" + line2;
+  }
+
+  function startTimer(section) {
+    const state = sectionStates[section];
+    if (state.intervalId) {
+      clearInterval(state.intervalId);
+      state.intervalId = null;
+    }
+    state.startTime = Date.now();
+    state.timerRunning = true;
+    updateTimerDisplay(section, 0);
+    state.intervalId = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+      updateTimerDisplay(section, elapsed);
+    }, 1000);
+  }
+
+  function stopTimerAndRecord(section) {
+    const state = sectionStates[section];
+    if (!state.timerRunning || !state.startTime) return;
+    const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+    state.timerRunning = false;
+    state.startTime = null;
+    if (state.intervalId) {
+      clearInterval(state.intervalId);
+      state.intervalId = null;
+    }
+    state.attempts.push(elapsed);
+    updateTimerDisplay(section);
+  }
+
+  function resetTimes(section) {
+    const state = sectionStates[section];
+    state.attempts = [];
+    state.timerRunning = false;
+    state.startTime = null;
+    if (state.intervalId) {
+      clearInterval(state.intervalId);
+      state.intervalId = null;
+    }
+    updateTimerDisplay(section);
+  }
+
+  function resetSection(section) {
+    // 空欄＆語群をクリアし、再度「あらすじ表示」に戻す
+    document.querySelectorAll(`.blank[data-section="${section}"]`).forEach(b => {
+      b.textContent = "";
+      b.dataset.word = "";
+      b.classList.remove("correct");
+    });
+    const bank = document.querySelector(`.word-bank[data-section="${section}"]`);
+    if (bank) bank.innerHTML = "";
+    document.querySelectorAll(`.word-chip[data-section="${section}"]`).forEach(chip => {
+      chip.classList.remove("used");
+      chip.classList.remove("selected-chip");
+    });
+    clearSelectedChip();
+    const resultEl = document.getElementById(`result-${section}`);
+    if (resultEl) resultEl.textContent = "";
+    // あらすじ表示（答えを入れる）
+    prefillAnswers(section);
+  }
+
+  function checkSection(section) {
+    const data = sectionData[section];
+    if (!data || !data.answers) return;
+    const blanks = document.querySelectorAll(`.blank[data-section="${section}"]`);
+    let allCorrect = true;
+    blanks.forEach(blank => {
+      const id = blank.dataset.blankId;
+      const userWord = blank.dataset.word || "";
+      if (!userWord) {
+        allCorrect = false;
+        blank.classList.remove("correct");
+        return;
+      }
+      const correct = data.answers[id];
+      if (userWord === correct) {
+        blank.classList.add("correct");
+      } else {
+        allCorrect = false;
+        blank.classList.remove("correct");
+        const chip = document.querySelector(
+          `.word-chip[data-section="${section}"][data-word="${userWord}"]`
+        );
+        if (chip) chip.classList.remove("used");
+        blank.textContent = "";
+        blank.dataset.word = "";
+      }
+    });
+
+    const resultEl = document.getElementById(`result-${section}`);
+    if (allCorrect) {
+      resultEl.textContent = "合格おめでとう！";
+      handleClearSection(section);
+    } else {
+      resultEl.textContent = "まだ間違いがあります。もう一度チャレンジしてみよう。";
+    }
+  }
+
+  function handleClearSection(section) {
+    stopTimerAndRecord(section);
+    const state = sectionStates[section];
+    state.cleared = true;
+
+    const stepEl = document.querySelector(`.step[data-step="${section}"]`);
+    if (stepEl) {
+      stepEl.classList.add("done");
+    }
+    const nextBtn = document.querySelector(`.next-section-btn[data-section="${section}"]`);
+    if (nextBtn) nextBtn.disabled = false;
+  }
+
+  function goToSection(section) {
+    // セクション表示切替
+    document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
+    const target = document.querySelector(`.section[data-section="${section}"]`);
+    if (target) target.classList.add("active");
+
+    // ステップの見た目切替
+    document.querySelectorAll(".step").forEach((st, idx) => {
+      st.classList.remove("active");
+      if (idx + 1 === section) {
+        st.classList.add("active");
+      }
+    });
+  }
+
+  function toggleExplain(section) {
+    const box = document.getElementById(`explain-${section}`);
+    if (!box) return;
+    box.style.display =
+      box.style.display === "none" || box.style.display === "" ? "block" : "none";
+  }
+
+  // 吹き出しの中身
+  const POPUP_DATA = {
+    heike_milk: {
+      title: "平清盛の乳母（うば）の願い",
+      body: `平治の乱の後、頼朝は捕らえられます。平清盛の継母（けいぼ）である池禅尼（いけのぜんに）が清盛に対し、「この頼朝は、亡くなった私の息子によく似ている。どうか命を助けてほしい」と熱心に頼み込んだことで、頼朝は伊豆（いず）に流されるだけで済みました。もしここで頼朝が死んでいたら、鎌倉幕府は存在しなかったかもしれません。歴史は一人の人間の情（なさけ）によって大きく変わることがあるのです。`
+    },
+    angry_yoritomo: {
+      title: "兄弟の不和：なぜ頼朝は怒ったのか？",
+      body: `頼朝が作った武士の集団（幕府）のルールは、「すべての命令は頼朝を通すこと」でした。これは、武士たちが勝手に朝廷の役職について、頼朝の支配から離れるのを防ぐためでした。頼朝は、義経が自分に相談せずに朝廷から役職を受けたことを、幕府の統率を乱す行為だと考え、これをきっかけに義経を討伐しました。`
+    },
+    yoritomo_death: {
+      title: "頼朝の死因は落馬か？",
+      body: `頼朝の死は急な病とされていますが、有力な説は落馬です。相模川（さがみがわ）の橋で供養（くよう）を行った帰りに、平家や義経の亡霊（ぼうれい）を見て落馬し、それがもとで亡くなったという伝説が残されています。`
+    },
+    tokimasa_shikken: {
+      title: "北条時政と執権の地位",
+      body: `頼朝の舅（しゅうと）である北条時政（ほうじょうときまさ）は、源氏ではないため将軍にはなれませんでした。そこで、娘の政子を通じて将軍を補佐する執権の地位に就き、その後、孫（頼家の息子）を将軍にするなどして、実質的な最高権力者の座を手にしました。これは、将軍よりも執権の方が偉いという、日本独自の「二重権力（にじゅうけんりょく）」の始まりでした。`
+    },
+    gotoba: {
+      title: "後鳥羽上皇はどんな人？",
+      body: `後鳥羽上皇は、和歌や刀剣制作に優れた才能を持ち、強いリーダーシップで朝廷の権威（けんい）回復に燃えていました。`
+    },
+    shitaji_chubun: {
+      title: "下地中分（したじちゅうぶん）とは？",
+      body: `承久の乱後、幕府に新たに地頭として入った武士（御家人）と、もともと土地を持っていた荘園の持ち主（貴族や寺社）との間で、土地の権利をめぐる争いが激化しました。幕府はこれを解決するため、係争中の荘園の土地を文字通り半分に分けるという「下地中分」という荒療治を行いました。これで「半分は地頭、半分は荘園領主」という形で解決し、地頭の権限がさらに強くなりました。`
+    },
+    yasutoki: {
+      title: "泰時が御家人をねじ伏せた？",
+      body: `北条泰時は、承久の乱後に多くの手柄を立てた御家人の要望を無視せず、むしろ御家人の意見をよく聞き、彼らにとって公平な政治を心掛けました。彼は、力でねじ伏せるのではなく、公正さと人望によって、御家人たちをまとめ上げ、北条氏の地位を磐石なものにしました。`
+    },
+    genko_reason: {
+      title: "元寇の要因は？",
+      body: `元の皇帝フビライ・ハンは、日本を支配下に入れようと、何度も日本に使者を送って「元に服従せよ」と要求しました。鎌倉幕府がこの要求を拒否し続けたため、元は武力による征服を決断し、二度の元寇（文永の役・弘安の役）が起こりました。`
+    },
+    tokuseirei: {
+      title: "徳政令の内容は？",
+      body: `幕府は御家人を救うため、徳政令を発布しました。御家人が質入れしたり売ったりした土地は、無条件で持ち主に返さなければならないこと、御家人が商人や高利貸しから借りたお金の借金は、すべて帳消しにすることなどが定められました。しかし、「どうせ徳政令でチャラになる」と考えた商人や金融業者が御家人にお金を貸さなくなり、かえって御家人の生活を苦しくする原因にもなりました。`
+    },
+    feudal_system: {
+      title: "封建制度って何？",
+      body: `武士の社会は、主君（頼朝）と家臣（御家人）が「助け合う約束」で結ばれていました。主君が守護や地頭などの役職や領地を与えることを「御恩（ごおん）」、御家人が戦いのときに主君のために戦ったり、命令に従ったりすることを「奉公（ほうこう）」といいます。この御恩と奉公にもとづく主従関係にもとづいた政治のしくみを封建制度（ほうけんせいど）といいます。`
+    }
+  };
+
+  function showPopup(key) {
+    const data = POPUP_DATA[key];
+    if (!data) return;
+    document.getElementById("popup-title").textContent = data.title;
+    const body = document.getElementById("popup-body");
+    body.textContent = "";
+    body.appendChild(document.createTextNode(data.body));
+    document.getElementById("popup-overlay").style.display = "flex";
+  }
+
+  function hidePopup() {
+    document.getElementById("popup-overlay").style.display = "none";
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    // まず全セクションに「あらすじ（答え入り）」を表示
+    for (let s = 1; s <= 5; s++) {
+      prefillAnswers(s);
+      updateTimerDisplay(s);
+    }
+    setupBlanks();
+
+    // チャレンジ開始ボタン
+    document.querySelectorAll(".start-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const section = Number(btn.dataset.section);
+        // 語群を再描画して空欄を空にする
+        document.querySelectorAll(`.blank[data-section="${section}"]`).forEach(b => {
+          b.textContent = "";
+          b.dataset.word = "";
+          b.classList.remove("correct");
+        });
+        renderWordBank(section);
+        const resultEl = document.getElementById(`result-${section}`);
+        if (resultEl) resultEl.textContent = "";
+        clearSelectedChip();
+        startTimer(section);
+      });
+    });
+
+    document.querySelectorAll(".check-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const section = Number(btn.dataset.section);
+        checkSection(section);
+      });
+    });
+
+    document.querySelectorAll(".reset-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const section = Number(btn.dataset.section);
+        resetSection(section);
+      });
+    });
+
+    document.querySelectorAll(".time-reset-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const section = Number(btn.dataset.section);
+        resetTimes(section);
+      });
+    });
+
+    document.querySelectorAll(".next-section-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const section = Number(btn.dataset.section);
+        const next = section + 1;
+        if (next <= 5) {
+          goToSection(next);
+        } else {
+          alert("5つの段落をすべてクリアしました！おつかれさま！");
+        }
+      });
+    });
+
+    document.querySelectorAll(".explain-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const section = Number(btn.dataset.section);
+        toggleExplain(section);
+      });
+    });
+
+    // タイトル下の①〜⑤ボタンで、どこからでも移動できるように
+    document.querySelectorAll(".step").forEach((stepEl, index) => {
+      stepEl.addEventListener("click", () => {
+        const section = index + 1;
+        goToSection(section);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

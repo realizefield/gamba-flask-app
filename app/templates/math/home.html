@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>中学数学GAMBA - ホーム</title>
+
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    /* 数学テーマ（グリーン系） */
+    body {
+      font-family: "Yu Gothic", "Meiryo", sans-serif;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .ai-box {
+      background-color: #e6fff0; /* 薄い緑 */
+      border-left: 6px solid #198754; /* 濃い緑 */
+    }
+    .chapter-row {
+      background-color: #c9e8d6; /* 少し濃い緑 */
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>中学数学GAMBA</h1>
+
+    <div class="ai-box p-3 mb-4 rounded">
+    <h5 class="mb-2">AIからのメッセージ</h5>
+    <div id="ai-message" class="mb-3"></div>
+
+    <div class="d-flex flex-wrap gap-2">
+      <button id="btn-review" class="btn btn-success">
+        前回の単元を復習する
+      </button>
+      <button id="btn-test" class="btn btn-outline-success">
+        前回の確認テストをする
+      </button>
+      <button id="btn-next" class="btn btn-success">
+        次の単元に進む
+      </button>
+    </div>
+  </div>
+
+  <h4 class="mb-2">学習単元 一覧</h4>
+
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle bg-white">
+      <thead class="table-light">
+        <tr class="text-center">
+          <th style="width:60px;">No</th>
+          <th>単元名</th>
+          <th style="width:90px;">状態</th>
+          <th style="width:110px;">復習する</th>
+          <th style="width:110px;">確認テスト</th>
+          <th style="width:140px;">この単元に進む</th>
+        </tr>
+      </thead>
+      <tbody id="unit-table-body">
+              </tbody>
+    </table>
+  </div>
+
+  <div class="text-end my-3">
+    <button id="btn-next-big" class="btn btn-success btn-lg">
+      AIおすすめ：次の単元に進む
+    </button>
+  </div>
+
+</div>
+
+<script>
+  // ★ 生徒の表示名（「さん」は自動で付きます）
+  const studentName = "太郎";
+
+  // 仮の進捗（後でサーバー側の値に差し替え）
+  const progress = {
+    // 数学用の仮の進捗に調整
+    lastUnitId: "mat01",
+    lastAction: "learn",             // "review" / "test" / "learn"
+    lastDate: "2025-11-28",
+    doneUnits: ["mat01"],           // 学習済み単元
+    unlockedUnits: [                // 開放済み単元
+      "mat01","mat02","mat03","mat04","mat05","mat06","mat07"
+    ]
+  };
+
+  // 1. 章一覧データ（変数名を 'chapters' に統一）
+  const chapters = [
+    { id: "chM1", title: "【中1】数と式・図形（1年）" },
+    { id: "chM2", title: "【中1】関数と資料の活用（1年）" },
+    { id: "chM3", title: "【中2】数と式・関数（2年）" },
+    { id: "chM4", title: "【中2】図形と確率（2年）" },
+    { id: "chM5", title: "【中3】数と式・二次関数（3年）" },
+    { id: "chM6", title: "【中3】図形・標本調査（3年）" }
+  ];
+
+  // 2. 単元一覧データ（変数名を 'units' に統一）
+  const units = [
+    // chM1: 【中1】数と式・図形（1年）
+    { id: "mat01", chapterId: "chM1", no: "1-1", title: "正の数・負の数" },
+    { id: "mat02", chapterId: "chM1", no: "1-2", title: "文字と式" },
+    { id: "mat03", chapterId: "chM1", no: "1-3", title: "方程式" },
+    { id: "mat04", chapterId: "chM1", no: "1-4", title: "平面図形" },
+    { id: "mat05", chapterId: "chM1", no: "1-5", title: "空間図形" },
+    // chM2: 【中1】関数と資料の活用（1年）
+    { id: "mat06", chapterId: "chM2", no: "1-6", title: "比例と反比例" },
+    { id: "mat07", chapterId: "chM2", no: "1-7", title: "資料の活用" },
+    // chM3: 【中2】数と式・関数（2年）
+    { id: "mat08", chapterId: "chM3", no: "2-1", title: "式の計算" },
+    { id: "mat09", chapterId: "chM3", no: "2-2", title: "連立方程式" },
+    { id: "mat10", chapterId: "chM3", no: "2-3", title: "一次関数" },
+    { id: "mat11", chapterId: "chM3", no: "2-4", title: "不等式" },
+    // chM4: 【中2】図形と確率（2年）
+    { id: "mat12", chapterId: "chM4", no: "2-5", title: "図形の合同" },
+    { id: "mat13", chapterId: "chM4", no: "2-6", title: "確率" },
+    { id: "mat14", chapterId: "chM4", no: "2-7", title: "図形の性質と証明" },
+    // chM5: 【中3】数と式・二次関数（3年）
+    { id: "mat15", chapterId: "chM5", no: "3-1", title: "多項式と展開・因数分解" },
+    { id: "mat16", chapterId: "chM5", no: "3-2", title: "平方根" },
+    { id: "mat17", chapterId: "chM5", no: "3-3", title: "二次方程式" },
+    { id: "mat18", chapterId: "chM5", no: "3-4", title: "二次関数 y=ax^2" },
+    // chM6: 【中3】図形・標本調査（3年）
+    { id: "mat19", chapterId: "chM6", no: "3-5", title: "図形の相似" },
+    { id: "mat20", chapterId: "chM6", no: "3-6", title: "円周角と三平方の定理" },
+    { id: "mat21", chapterId: "chM6", no: "3-7", title: "標本調査" }
+  ];
+
+  function getUnitById(id) {
+    return units.find(u => u.id === id);
+  }
+
+  // AIメッセージ生成（寄り添いメッセージはindex.htmlと共通）
+  const aiMessages = [
+    `**${studentName}さん、こんにちは!** 今、勉強を始めようと思っただけで、もう**素晴らしい一歩**です。焦らず、自分のペースでいきましょう。`,
+    `ちょっと疲れてるかな？ 大丈夫。**一問だけでもOK**です。息抜きも大切ですよ。今日も来てくれてありがとう。`,
+    `以前やった単元に「これ、簡単かも」と思えるものがあれば、そこからで大丈夫。**スモールステップで、自信を取り戻していこう**！`,
+    `**進捗は気にしなくて大丈夫**。大切なのは、昨日より少しだけ前に進むこと。${studentName}さんの頑張り、AIはちゃんと見ていますよ。`,
+    `調子はどうですか？ 勉強が嫌になったら、一度閉じて休憩してくださいね。**またいつでも戻ってきてください**。待っています！`,
+  ];
+
+  function buildAiMessage() {
+    // ランダムな寄り添いメッセージを選択
+    const randomIndex = Math.floor(Math.random() * aiMessages.length);
+    const randomMessage = aiMessages[randomIndex];
+
+    // 最新の学習履歴に応じたメッセージを追記
+    const lastUnit = getUnitById(progress.lastUnitId);
+    let actionText = "";
+    if (progress.lastAction === "review") actionText = "復習";
+    else if (progress.lastAction === "test") actionText = "確認テスト";
+    else actionText = "学習";
+
+    const unitTitle = lastUnit ? lastUnit.title : "前回の単元";
+    const historyMessage =
+      `<br><br>` +
+      `前回は「**${unitTitle}**」の${actionText}をしました。（${progress.lastDate}）<br>` +
+      `次は、前回の復習から始めるのがおすすめです。`;
+
+    document.getElementById("ai-message").innerHTML = randomMessage + historyMessage;
+  }
+
+  // 単元一覧テーブル生成
+  function buildUnitTable() {
+    const tbody = document.getElementById("unit-table-body");
+    tbody.innerHTML = "";
+
+    chapters.forEach(ch => {
+      // 章見出し行
+      const trChap = document.createElement("tr");
+      trChap.className = "chapter-row";
+      const tdChap = document.createElement("td");
+      tdChap.colSpan = 6;
+      tdChap.textContent = ch.title;
+      trChap.appendChild(tdChap);
+      tbody.appendChild(trChap);
+
+      // その章の単元
+      const unitsInChapter = units.filter(u => u.chapterId === ch.id);
+      unitsInChapter.forEach(unit => {
+        const tr = document.createElement("tr");
+        tr.classList.add("text-center");
+
+        const tdNo = document.createElement("td");
+        tdNo.textContent = unit.no;
+        tr.appendChild(tdNo);
+
+        const tdTitle = document.createElement("td");
+        tdTitle.classList.remove("text-center");
+        tdTitle.classList.add("text-start");
+        tdTitle.textContent = unit.title;
+        tr.appendChild(tdTitle);
+
+        const tdStatus = document.createElement("td");
+        let status = "未学習";
+        if (progress.doneUnits.includes(unit.id)) status = "学習済み";
+        if (!progress.unlockedUnits.includes(unit.id)) status = "ロック中";
+        tdStatus.textContent = status;
+        tr.appendChild(tdStatus);
+
+        // 復習ボタン
+        const tdRev = document.createElement("td");
+        const btnRev = document.createElement("button");
+        btnRev.className = "btn btn-sm btn-outline-success";
+        btnRev.textContent = "復習する";
+        btnRev.disabled = !progress.doneUnits.includes(unit.id);
+        btnRev.onclick = () => startReview(unit.id);
+        tdRev.appendChild(btnRev);
+        tr.appendChild(tdRev);
+
+        // テストボタン
+        const tdTest = document.createElement("td");
+        const btnTest = document.createElement("button");
+        btnTest.className = "btn btn-sm btn-outline-success";
+        btnTest.textContent = "テスト";
+        btnTest.disabled = !progress.doneUnits.includes(unit.id);
+        btnTest.onclick = () => startTest(unit.id);
+        tdTest.appendChild(btnTest);
+        tr.appendChild(tdTest);
+
+        // この単元に進む
+        const tdGo = document.createElement("td");
+        const btnGo = document.createElement("button");
+        btnGo.className = "btn btn-sm btn-success";
+        btnGo.textContent = "この単元に進む";
+        btnGo.disabled = !progress.unlockedUnits.includes(unit.id);
+        btnGo.onclick = () => startLearn(unit.id);
+        tdGo.appendChild(btnGo);
+        tr.appendChild(tdGo);
+
+        tbody.appendChild(tr);
+      });
+    });
+  }
+
+  // 次に進む単元（開放済み & 未学習の最初）
+  function getNextUnitId() {
+    const u = units.find(
+      x => progress.unlockedUnits.includes(x.id) &&
+           !progress.doneUnits.includes(x.id)
+    );
+    return u ? u.id : null;
+  }
+
+  // --- ここから下は「画面遷移」の仮処理 ---
+  function startReview(unitId) {
+    const unit = getUnitById(unitId);
+    alert(`【数学：復習モード】「${unit.title}」の復習画面へ進みます。`);
+    // 実際には、次のファイルを読み込む: learn_mat01.html
+    // if (unitId === "mat01") window.location.href = "learn_mat01.html";
+  }
+  function startTest(unitId) {
+    const unit = getUnitById(unitId);
+    alert(`【数学：確認テスト】「${unit.title}」のテスト画面へ進みます。`);
+  }
+  function startLearn(unitId) {
+    const unit = getUnitById(unitId);
+    alert(`【数学：新しい学習】「${unit.title}」の学習画面へ進みます。`);
+    // 実際には、次のファイルを読み込む: learn_mat01.html
+    // if (unitId === "mat01") window.location.href = "learn_mat01.html";
+  }
+
+  // 初期化
+  window.addEventListener("DOMContentLoaded", () => {
+    buildAiMessage();
+    buildUnitTable();
+
+    // ホーム画面のボタンアクション設定
+    document.getElementById("btn-review").onclick =
+      () => startReview(progress.lastUnitId);
+    document.getElementById("btn-test").onclick =
+      () => startTest(progress.lastUnitId);
+    document.getElementById("btn-next").onclick =
+      () => {
+        const id = getNextUnitId();
+        if (id) startLearn(id);
+        else alert("次に進める単元はありません。");
+      };
+    document.getElementById("btn-next-big").onclick =
+      () => {
+        const id = getNextUnitId();
+        if (id) startLearn(id);
+        else alert("次に進める単元はありません。");
+      };
+  });
+</script>
+
+</body>
+</html>

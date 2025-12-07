@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>中学歴史GAMBA：四大文明の発展と特徴</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 900px;
+      margin: 20px auto;
+      line-height: 1.7;
+    }
+
+    .question-box {
+      border: 1px solid #ccc;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .blank {
+      display: inline-block;
+      min-width: 90px;
+      min-height: 24px;
+      border-bottom: 2px solid #666;
+      margin: 0 4px;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #fff;
+      padding: 2px 4px; 
+    }
+
+    .blank.correct {
+      background-color: #ccf; /* 水色 */
+      border-bottom: 2px solid #339;
+    }
+
+    .word-bank {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 8px;
+      min-height: 60px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .word-chip {
+      padding: 6px 10px;
+      border-radius: 16px;
+      border: 1px solid #666;
+      background-color: #f5f5f5;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .word-chip.used {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      background-color: #1976d2;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background-color: #666;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .result-message {
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    .explain-box {
+      margin-top: 8px;
+      padding: 8px;
+      border-left: 4px solid #1976d2;
+      background-color: #f0f4ff;
+      display: none;
+    }
+
+    .next-actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>中学歴史GAMBA - 四大文明の発展と特徴</h1>
+
+<div class="question-box">
+  <p><strong>【問題】四大文明と重要語句</strong></p>
+  <p id="question-text">
+    <table>
+      <thead>
+        <tr>
+          <th>文明</th>
+          <th>時代（目安）</th>
+          <th>重要語句</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="blank" data-blank-id="A"></span></td>
+          <td>紀元前3100年ごろ</td>
+          <td>
+            <span class="blank" data-blank-id="B"></span>
+            流域、暦は
+            <span class="blank" data-blank-id="C"></span>
+            、文字は
+            <span class="blank" data-blank-id="D"></span>
+            、建造物
+            <span class="blank" data-blank-id="E"></span>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="blank" data-blank-id="F"></span></td>
+          <td>紀元前3500年ごろ</td>
+          <td>
+            <span class="blank" data-blank-id="G"></span>
+            流域、暦は
+            <span class="blank" data-blank-id="H"></span>
+            、文字は
+            <span class="blank" data-blank-id="I"></span>
+            、法典
+            <span class="blank" data-blank-id="J"></span>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="blank" data-blank-id="K"></span></td>
+          <td>紀元前2300年ごろ</td>
+          <td>
+            <span class="blank" data-blank-id="L"></span>
+            流域、都市国家
+            <span class="blank" data-blank-id="M"></span>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="blank" data-blank-id="N"></span></td>
+          <td>紀元前1500年ごろ</td>
+          <td>
+            <span class="blank" data-blank-id="O"></span>
+            流域、王朝
+            <span class="blank" data-blank-id="P"></span>
+            、文字
+            <span class="blank" data-blank-id="Q"></span>
+            、金属器
+            <span class="blank" data-blank-id="R"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </p>
+
+  <p><strong>【語群】（ドラッグ＆ドロップで空欄に入れよう）</strong></p>
+  <div id="word-bank" class="word-bank">
+    </div>
+
+  <div class="controls">
+    <button id="check-btn">判定</button>
+    <button id="retry-btn" class="secondary">チャレンジする</button>
+    <button id="explain-btn" class="secondary">【解説】を見る</button>
+  </div>
+
+  <div id="result" class="result-message"></div>
+
+  <div id="explain-box" class="explain-box">
+    <strong>【解説】</strong><br>
+    この表は、四大文明（エジプト、メソポタミア、インダス、中国）の主要な要素をまとめたものです。特に、暦（太陽暦と太陰暦）、文字（象形文字、くさび形文字）、そして代表的な遺物や法典（ピラミッド、ハンムラビ法典）は、文明を区別する上で重要です。
+  </div>
+
+  <div id="next-actions" class="next-actions" style="display: none;">
+    <button id="test-btn">確認テストをする</button>
+    <button id="review-btn" class="secondary">この単元を復習する</button>
+  </div>
+</div>
+
+<script>
+  // --- 問題データ (スプレッドシートの表より生成) ---
+  const answers = {
+    A: "エジプト文明", B: "ナイル川", C: "太陽暦", D: "象形文字", E: "ピラミッド",
+    F: "メソポタミア文明", G: "チグリス・ユーフラテス川", H: "太陰暦", I: "くさび形文字", J: "ハンムラビ法典",
+    K: "インダス文明", L: "インダス川", M: "モヘンジョ=ダロ", 
+    N: "中国文明", O: "黄河", P: "殷いん", Q: "甲骨文字", R: "青銅器"
+  };
+
+  // 語群（シャッフル前）
+  const choices = [
+    "エジプト文明", "ナイル川", "太陽暦", "象形文字", "ピラミッド",
+    "メソポタミア文明", "チグリス・ユーフラテス川", "太陰暦", "くさび形文字", "ハンムラビ法典",
+    "インダス文明", "インダス川", "モヘンジョ=ダロ",
+    "中国文明", "黄河", "殷いん", "甲骨文字", "青銅器",
+    // ダミー語句
+    "メコン川", "万里の長城", "太宗", "マヤ文明"
+  ];
+
+  // --- 共通のJS関数（歴史問題から流用） ---
+  
+  // 配列シャッフル
+  function shuffle(array) {
+    const arr = array.slice();
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // 語群の描画
+  function renderWordBank() {
+    const bank = document.getElementById("word-bank");
+    bank.innerHTML = "";
+    const shuffled = shuffle(choices);
+
+    shuffled.forEach(word => {
+      const chip = document.createElement("div");
+      chip.className = "word-chip";
+      chip.textContent = word;
+      chip.draggable = true;
+      chip.dataset.word = word;
+
+      chip.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("text/plain", word);
+      });
+
+      bank.appendChild(chip);
+    });
+  }
+
+  // 空欄へのD&D設定
+  function setupBlanks() {
+    document.querySelectorAll(".blank").forEach(blank => {
+      blank.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+
+      blank.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const word = e.dataTransfer.getData("text/plain");
+        if (!word) return;
+
+        // すでにその語句を使っているchipがあるかチェック
+        const chip = document.querySelector(
+          `.word-chip[data-word="${word}"]:not(.used)`
+        );
+        if (!chip) return;
+
+        // 既存の空欄に語句が設定されていたら、元のchipを未使用に戻す
+        const existingWord = blank.dataset.word;
+        if (existingWord) {
+            const existingChip = document.querySelector(
+              `.word-chip[data-word="${existingWord}"]`
+            );
+            if (existingChip) existingChip.classList.remove("used");
+        }
+        
+        // blankに表示
+        blank.textContent = word;
+        blank.dataset.word = word;
+        blank.classList.remove("correct");
+
+        // chipを「使用済み」に
+        chip.classList.add("used");
+      });
+
+      // クリックでクリア（ミスったとき用）
+      blank.addEventListener("click", () => {
+        const word = blank.dataset.word;
+        if (!word) return;
+        const chip = document.querySelector(
+          `.word-chip[data-word="${word}"]`
+        );
+        if (chip) chip.classList.remove("used");
+        blank.textContent = "";
+        blank.dataset.word = "";
+        blank.classList.remove("correct");
+      });
+    });
+  }
+
+  // 判定処理
+  function checkAnswers() {
+    const blanks = document.querySelectorAll(".blank");
+    let allCorrect = true;
+
+    blanks.forEach(blank => {
+      const id = blank.dataset.blankId || blank.getAttribute("data-blank-id");
+      const userWord = blank.dataset.word || "";
+
+      if (!userWord) {
+        allCorrect = false;
+        return;
+      }
+
+      if (answers[id] === userWord) {
+        // 正解
+        blank.classList.add("correct");
+      } else {
+        // 不正解：空に戻し、語群のchipを解除
+        allCorrect = false;
+        blank.textContent = "";
+        blank.dataset.word = "";
+        blank.classList.remove("correct");
+
+        const chip = document.querySelector(
+          `.word-chip[data-word="${userWord}"]`
+        );
+        if (chip) chip.classList.remove("used");
+      }
+    });
+
+    const result = document.getElementById("result");
+    const nextActions = document.getElementById("next-actions");
+
+    if (allCorrect) {
+      result.textContent = "合格おめでとう！";
+      nextActions.style.display = "flex";
+    } else {
+      result.textContent = "まだ間違いがあります。チャレンジしてみよう！";
+      nextActions.style.display = "none";
+    }
+  }
+
+  // チャレンジする（残りを続ける）
+  function retryChallenge() {
+    const result = document.getElementById("result");
+    result.textContent = "";
+    document.getElementById("explain-box").style.display = "none";
+  }
+
+  // 解説を表示
+  function toggleExplain() {
+    const box = document.getElementById("explain-box");
+    box.style.display = (box.style.display === "none" || box.style.display === "")
+      ? "block"
+      : "none";
+  }
+
+  // 確認テスト・復習ボタン（機能は割愛）
+  function goToTest() {
+    alert("確認テスト画面へ進む処理をここに実装します。");
+  }
+
+  function goToReview() {
+    alert("この単元の復習リストへ戻る処理をここに実装します。");
+  }
+
+  // 初期化
+  window.addEventListener("DOMContentLoaded", () => {
+    renderWordBank();
+    setupBlanks();
+
+    document.getElementById("check-btn").addEventListener("click", checkAnswers);
+    document.getElementById("retry-btn").addEventListener("click", retryChallenge);
+    document.getElementById("explain-btn").addEventListener("click", toggleExplain);
+    document.getElementById("test-btn").addEventListener("click", goToTest);
+    document.getElementById("review-btn").addEventListener("click", goToReview);
+
+    // next-actionsは最初は非表示
+    document.getElementById("next-actions").style.display = "none";
+  });
+</script>
+
+</body>
+</html>

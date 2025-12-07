@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>中学歴史GAMBA - ホーム</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 980px;
+      margin: 20px auto;
+      line-height: 1.7;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      margin-top: 20px;
+      margin-bottom: 6px;
+    }
+
+    .ai-box {
+      border-radius: 8px;
+      padding: 12px 16px;
+      background-color: #f0f4ff;
+      border-left: 4px solid #1976d2;
+      margin-bottom: 12px;
+    }
+
+    .ai-title {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .ai-actions {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      background-color: #1976d2;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button.secondary {
+      background-color: #666;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    th {
+      background-color: #eee;
+    }
+
+    .chapter-row th {
+      background-color: #dde7ff;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .status-done {
+      color: #1976d2;
+      font-weight: bold;
+    }
+
+    .status-locked {
+      color: #888;
+    }
+
+    .next-btn-wrap {
+      margin-top: 16px;
+      text-align: right;
+    }
+
+    .next-btn {
+      padding: 8px 16px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>中学歴史GAMBA</h1>
+
+<!-- AIコメントエリア -->
+<div class="ai-box">
+  <div class="ai-title">AIからのメッセージ</div>
+  <div id="ai-message"></div>
+  <div class="ai-actions">
+    <button id="btn-review">前回の単元を復習する</button>
+    <button id="btn-test" class="secondary">前回の確認テストをする</button>
+    <button id="btn-next">次の単元に進む</button>
+  </div>
+</div>
+
+<h2>学習単元 一覧</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width:40px;">No</th>
+      <th>単元名</th>
+      <th style="width:80px;">状態</th>
+      <th style="width:90px;">復習する</th>
+      <th style="width:90px;">確認テスト</th>
+      <th style="width:120px;">この単元に進む</th>
+    </tr>
+  </thead>
+  <tbody id="unit-table-body">
+    <!-- JSで作成 -->
+  </tbody>
+</table>
+
+<div class="next-btn-wrap">
+  <button id="btn-next-big" class="next-btn">AIおすすめ：次の単元に進む</button>
+</div>
+
+<script>
+  // ★ 生徒の表示名（「さん」は自動で付きます）
+  const studentName = "太郎";
+
+  // 仮の進捗（後でサーバー側から差し替え）
+  const progress = {
+    lastUnitId: "his01",
+    lastAction: "test",             // "review" / "test" / "learn"
+    lastDate: "2025-11-20",
+    doneUnits: ["his01"],           // 学習済み
+    unlockedUnits: [                // 開放済み（ロック解除済み）
+      "his01","his02","his03","his04","his05",
+      "his06","his07","his08","his09","his10"
+    ]
+  };
+
+  // 章一覧
+  const chapters = [
+    { id: "ch1", title: "【中1】第1章 人類の出現と日本列島" },
+    { id: "ch2", title: "【中1】第2章 古代国家の成立" },
+    { id: "ch3", title: "【中2】第3章 武士の台頭" },
+    { id: "ch4", title: "【中2】第4章 室町〜戦国" },
+    { id: "ch5", title: "【中2】第5章 江戸幕府と近世文化" },
+    { id: "ch6", title: "【中3】第6章 日本の近代化" },
+    { id: "ch7", title: "【中3】第7章 戦争と国際関係" },
+    { id: "ch8", title: "【中3】第8章 現代日本" }
+  ];
+
+  // 単元一覧（IDは任意だが、このまま使うと楽）
+  const units = [
+    // ch1
+    { id: "his01", chapterId: "ch1", no: "1-1", title: "人類の出現と古代文明" },
+    { id: "his02", chapterId: "ch1", no: "1-2", title: "旧石器時代のくらし" },
+    { id: "his03", chapterId: "ch1", no: "1-3", title: "縄文時代の生活" },
+    { id: "his04", chapterId: "ch1", no: "1-4", title: "弥生時代と稲作の広まり" },
+    { id: "his05", chapterId: "ch1", no: "1-5", title: "古墳時代と大和政権" },
+
+    // ch2
+    { id: "his06", chapterId: "ch2", no: "2-1", title: "飛鳥時代と聖徳太子" },
+    { id: "his07", chapterId: "ch2", no: "2-2", title: "大化の改新" },
+    { id: "his08", chapterId: "ch2", no: "2-3", title: "奈良時代と国分寺" },
+    { id: "his09", chapterId: "ch2", no: "2-4", title: "平安時代の政治と文化" },
+    { id: "his10", chapterId: "ch2", no: "2-5", title: "摂関政治と藤原氏" },
+
+    // ch3
+    { id: "his11", chapterId: "ch3", no: "3-1", title: "平氏の台頭と平清盛" },
+    { id: "his12", chapterId: "ch3", no: "3-2", title: "源頼朝と鎌倉幕府" },
+    { id: "his13", chapterId: "ch3", no: "3-3", title: "北条氏と御成敗式目" },
+    { id: "his14", chapterId: "ch3", no: "3-4", title: "モンゴル襲来" },
+    { id: "his15", chapterId: "ch3", no: "3-5", title: "鎌倉幕府の滅亡" },
+
+    // ch4
+    { id: "his16", chapterId: "ch4", no: "4-1", title: "足利尊氏と室町幕府" },
+    { id: "his17", chapterId: "ch4", no: "4-2", title: "室町文化（北山文化・東山文化）" },
+    { id: "his18", chapterId: "ch4", no: "4-3", title: "応仁の乱と戦国大名" },
+    { id: "his19", chapterId: "ch4", no: "4-4", title: "織田信長の統一事業" },
+    { id: "his20", chapterId: "ch4", no: "4-5", title: "豊臣秀吉と全国統一" },
+
+    // ch5
+    { id: "his21", chapterId: "ch5", no: "5-1", title: "徳川家康と江戸幕府" },
+    { id: "his22", chapterId: "ch5", no: "5-2", title: "参勤交代と幕藩体制" },
+    { id: "his23", chapterId: "ch5", no: "5-3", title: "江戸の社会と身分制度" },
+    { id: "his24", chapterId: "ch5", no: "5-4", title: "元禄文化・化政文化" },
+    { id: "his25", chapterId: "ch5", no: "5-5", title: "鎖国の仕組みと海外交流" },
+
+    // ch6
+    { id: "his26", chapterId: "ch6", no: "6-1", title: "ペリー来航" },
+    { id: "his27", chapterId: "ch6", no: "6-2", title: "尊王攘夷と長州・薩摩" },
+    { id: "his28", chapterId: "ch6", no: "6-3", title: "明治維新" },
+    { id: "his29", chapterId: "ch6", no: "6-4", title: "富国強兵と殖産興業" },
+    { id: "his30", chapterId: "ch6", no: "6-5", title: "近代国家の成立（大日本帝国憲法）" },
+
+    // ch7
+    { id: "his31", chapterId: "ch7", no: "7-1", title: "日清戦争" },
+    { id: "his32", chapterId: "ch7", no: "7-2", title: "日露戦争" },
+    { id: "his33", chapterId: "ch7", no: "7-3", title: "第一次世界大戦" },
+    { id: "his34", chapterId: "ch7", no: "7-4", title: "世界恐慌と軍部の台頭" },
+    { id: "his35", chapterId: "ch7", no: "7-5", title: "第二次世界大戦" },
+
+    // ch8
+    { id: "his36", chapterId: "ch8", no: "8-1", title: "日本国憲法" },
+    { id: "his37", chapterId: "ch8", no: "8-2", title: "高度経済成長" },
+    { id: "his38", chapterId: "ch8", no: "8-3", title: "国際化と日本の立場" },
+    { id: "his39", chapterId: "ch8", no: "8-4", title: "今日の課題（環境・福祉・情報化）" }
+  ];
+
+  function getUnitById(id) {
+    return units.find(u => u.id === id);
+  }
+
+  // --- AIメッセージ ---
+  function buildAiMessage() {
+    const lastUnit = getUnitById(progress.lastUnitId);
+    let actionText = "";
+    if (progress.lastAction === "review") {
+      actionText = "復習";
+    } else if (progress.lastAction === "test") {
+      actionText = "確認テスト";
+    } else {
+      actionText = "学習";
+    }
+
+    const unitTitle = lastUnit ? lastUnit.title : "前回の単元";
+    const msg =
+      `${studentName}さん、前回は「${unitTitle}」の${actionText}をしました。` +
+      `（${progress.lastDate}）<br>` +
+      `今日はどうしますか？<br>` +
+      `・前回の内容を復習する<br>` +
+      `・前回の確認テストをやり直す<br>` +
+      `・次の単元に進む`;
+
+    document.getElementById("ai-message").innerHTML = msg;
+  }
+
+  // --- 単元一覧表 ---
+  function buildUnitTable() {
+    const tbody = document.getElementById("unit-table-body");
+    tbody.innerHTML = "";
+
+    chapters.forEach(ch => {
+      // 章ヘッダー行
+      const trChapter = document.createElement("tr");
+      trChapter.className = "chapter-row";
+      const th = document.createElement("th");
+      th.colSpan = 6;
+      th.textContent = ch.title;
+      trChapter.appendChild(th);
+      tbody.appendChild(trChapter);
+
+      // その章に属する単元
+      const unitsInChapter = units.filter(u => u.chapterId === ch.id);
+      unitsInChapter.forEach((unit, index) => {
+        const tr = document.createElement("tr");
+
+        const tdNo = document.createElement("td");
+        tdNo.textContent = unit.no;
+        tr.appendChild(tdNo);
+
+        const tdTitle = document.createElement("td");
+        tdTitle.textContent = unit.title;
+        tr.appendChild(tdTitle);
+
+        const tdStatus = document.createElement("td");
+        let statusText = "未学習";
+        let statusClass = "";
+        if (progress.doneUnits.includes(unit.id)) {
+          statusText = "学習済み";
+          statusClass = "status-done";
+        }
+        if (!progress.unlockedUnits.includes(unit.id)) {
+          statusText = "ロック中";
+          statusClass = "status-locked";
+        }
+        tdStatus.textContent = statusText;
+        if (statusClass) tdStatus.classList.add(statusClass);
+        tr.appendChild(tdStatus);
+
+        // 復習ボタン
+        const tdReview = document.createElement("td");
+        const btnReview = document.createElement("button");
+        btnReview.textContent = "復習する";
+        btnReview.disabled = !progress.doneUnits.includes(unit.id);
+        btnReview.onclick = () => startReview(unit.id);
+        tdReview.appendChild(btnReview);
+        tr.appendChild(tdReview);
+
+        // テストボタン
+        const tdTest = document.createElement("td");
+        const btnTest = document.createElement("button");
+        btnTest.textContent = "テスト";
+        btnTest.disabled = !progress.doneUnits.includes(unit.id);
+        btnTest.onclick = () => startTest(unit.id);
+        tdTest.appendChild(btnTest);
+        tr.appendChild(tdTest);
+
+        // この単元に進む
+        const tdGo = document.createElement("td");
+        const btnGo = document.createElement("button");
+        btnGo.textContent = "この単元に進む";
+        btnGo.disabled = !progress.unlockedUnits.includes(unit.id);
+        btnGo.onclick = () => startLearn(unit.id);
+        tdGo.appendChild(btnGo);
+        tr.appendChild(tdGo);
+
+        tbody.appendChild(tr);
+      });
+    });
+  }
+
+  // 次に進む単元（開放済み & 未学習の最初のもの）
+  function getNextUnitId() {
+    const candidate = units.find(u =>
+      progress.unlockedUnits.includes(u.id) &&
+      !progress.doneUnits.includes(u.id)
+    );
+    return candidate ? candidate.id : null;
+  }
+
+  // --- ここから下は画面遷移の仮処理 ---
+  function startReview(unitId) {
+    const unit = getUnitById(unitId);
+    alert(`【復習モード】\n「${unit.title}」の復習画面へ進みます。`);
+    // 本番では：location.href = `/history/review?unit=${unitId}` など
+  }
+
+  function startTest(unitId) {
+    const unit = getUnitById(unitId);
+    alert(`【確認テスト】\n「${unit.title}」の確認テスト画面へ進みます。`);
+    // location.href = `/history/test?unit=${unitId}`;
+  }
+
+  function startLearn(unitId) {
+    const unit = getUnitById(unitId);
+    alert(`【新しい学習】\n「${unit.title}」の学習画面へ進みます。`);
+    // location.href = `/history/learn?unit=${unitId}`;
+  }
+
+  // --- 初期化 ---
+  window.addEventListener("DOMContentLoaded", () => {
+    buildAiMessage();
+    buildUnitTable();
+
+    document.getElementById("btn-review").onclick = () =>
+      startReview(progress.lastUnitId);
+
+    document.getElementById("btn-test").onclick = () =>
+      startTest(progress.lastUnitId);
+
+    document.getElementById("btn-next").onclick = () => {
+      const nextId = getNextUnitId();
+      if (nextId) startLearn(nextId);
+      else alert("次に進める単元はありません。");
+    };
+
+    document.getElementById("btn-next-big").onclick = () => {
+      const nextId = getNextUnitId();
+      if (nextId) startLearn(nextId);
+      else alert("次に進める単元はありません。");
+    };
+  });
+</script>
+
+</body>
+</html>

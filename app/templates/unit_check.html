@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}数学：{{ unit.title }}（確認問題）{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>数学：{{ unit.title }}（確認問題）</h1>
+
+    <form method="post">
+        {% for q in quiz.questions %}
+            {% set q_index = loop.index %}
+            <div style="margin-bottom: 18px;">
+                <p><strong>問{{ q_index }}.</strong> {{ q.text }}</p>
+                {% for opt in q.options %}
+                    <label style="display:block; margin-left: 18px; margin-bottom:4px;">
+                        <input type="radio" name="q{{ q_index }}" value="{{ loop.index0 }}">
+                        <span>{{ opt | safe }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">採点する</button>
+    </form>
+
+    {% if score is not none %}
+        <hr>
+        <p><strong>得点：</strong>{{ score }} 点</p>
+
+        {% if score >= 60 %}
+            <p><strong>合格です！やりましたね。</strong></p>
+        {% else %}
+            <p>今回は不合格です。導入・例題・練習問題を復習して、もう一度チャレンジしましょう。</p>
+        {% endif %}
+
+        <h3>解説</h3>
+        <ul>
+            {% for q in quiz.questions %}
+                <li>
+                    <strong>問{{ loop.index }}：</strong> {{ q.explanation }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div style="margin-top: 16px;">
+            {% if score >= 60 %}
+                <!-- 合格したときのボタン -->
+                <a href="{{ url_for('new_unit', subject_id=subject.id) }}" class="btn btn-primary">
+                    次に進む
+                </a>
+                <a href="{{ url_for('unit_intro', unit_id=unit.id) }}" class="btn btn-secondary">
+                    復習する
+                </a>
+                <a href="{{ url_for('subject_menu', subject_id=subject.id) }}" class="btn btn-outline">
+                    学習を終了する
+                </a>
+            {% else %}
+                <!-- 不合格のときのボタン -->
+                <a href="{{ url_for('unit_intro', unit_id=unit.id) }}" class="btn btn-secondary">
+                    復習する
+                </a>
+                <a href="{{ url_for('unit_check', unit_id=unit.id) }}" class="btn btn-outline">
+                    もう一度解く
+                </a>
+                <a href="{{ url_for('subject_menu', subject_id=subject.id) }}" class="btn btn-outline">
+                    科目メニューに戻る
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

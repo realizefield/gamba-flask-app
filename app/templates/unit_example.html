@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ subject.name }}：{{ unit.title }}（例題）{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ subject.name }}：{{ unit.title }}（例題）</h1>
+
+    <p style="white-space: pre-wrap;">{{ example_question }}</p>
+
+    {% if example_solution %}
+        <details style="margin-top: 16px;">
+            <summary class="btn btn-outline">解答・解説を見る</summary>
+            <div style="margin-top: 12px; white-space: pre-wrap;">
+                {{ example_solution }}
+            </div>
+        </details>
+    {% endif %}
+
+    <hr>
+    <a href="{{ url_for('unit_practice', unit_id=unit.id) }}" class="btn btn-secondary">
+        練習問題へ進む
+    </a>
+    <a href="{{ url_for('unit_intro', unit_id=unit.id) }}" class="btn btn-outline">
+        導入に戻る
+    </a>
+    <a href="{{ url_for('subject_menu', subject_id=subject.id) }}" class="btn btn-outline">
+        科目メニューに戻る
+    </a>
+</div>
+{% endblock %}

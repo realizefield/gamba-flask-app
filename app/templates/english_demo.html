@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}英語クリック辞書デモ | GAMBA{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h2 class="mb-3">英語クリック辞書デモ</h2>
+  <p>単語をクリック / ダブルクリック、文をクリック / ダブルクリックして試してみてください。</p>
+
+  <!-- ★ data-article-id で記事IDを指定 -->
+  <div class="g-english mt-3" data-article-id="ai_demo_01">
+AI is one of the most exciting fields of technological study, giving computers the ability to "think", "learn" and adapt when faced with a host of data. But it is not a technology of the future. It is all around us today, pervading our everyday lives and allowing us to take advantage of image and voice recognition software, intelligent web searching and medical advances, the latter made possible thanks to robot scientists formulating hypotheses and interpreting data. Modern video games use AI to generate intelligent behaviour in non-player characters. NASA's Mars Rover was designed to make its own decisions, stopping and analysing only the rocks it felt would be useful. And more is to come, with driverless cars and intelligent home systems on their way. As a result, many universities have been promoting AI courses and modules for both undergraduate and postgraduate students. Each of them requires a solid background in computing, maths and physics and explores knowledge representation, planning and learning. "Studying AI is perfect for students who can solve problems in abstract ways and devise new angles," says Dr Richard Watson, senior lecturer in electronics and computer science at the University of Southampton. "But AI is also about learning techniques of advanced computer science, so students should have a broad education in computer science before they tackle it." For that reason, very few undergraduate degrees will concentrate entirely on AI. Instead, it tends to be offered as modules within an overall computer science.
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <!-- 訳データを先に読み込む -->
+  <script src="{{ url_for('static', filename='js/english_trans_ai01.js') }}"></script>
+  <!-- クリック辞書本体 -->
+  <script src="{{ url_for('static', filename='js/english_helper.js') }}"></script>
+{% endblock %}
