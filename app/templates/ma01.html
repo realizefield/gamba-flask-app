@@ -2,22 +2,129 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>MA01 分数の性質（テスト用）</title>
+  <meta charset="UTF-8" />
+  <title>MA01 分数の性質・通分</title>
+  <style>
+    body { font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif; line-height: 1.7; }
+    h1, h2, h3 { margin: 0.5em 0; }
+    .section { margin: 1.5em 0; }
+    .problem-box { border: 1px solid #333; padding: 0.8em; margin: 0.8em 0; }
+    .fraction { display: inline-block; text-align: center; }
+    .fraction .num { border-bottom: 1px solid #000; display: block; }
+    .fraction .den { display: block; }
+    .q-list { margin-left: 1.5em; }
+    .q-item { margin: 0.3em 0; }
+    .blank { display: inline-block; min-width: 2em; border-bottom: 1px solid #000; text-align: center; }
+    details { margin-top: 1em; }
+  </style>
 </head>
 <body>
-    <h1>MA01 分数の性質（テスト表示）</h1>
 
-    <p>このページが表示されれば、テンプレートのエラーは消えています。</p>
+  <h1>MA01　分数の性質・通分</h1>
 
-    <p>
-        画像テスト：
-        <br>
-        <img src="/static/img/ma01_intro1.png" alt="MA01 導入イメージ" style="max-width:100%;height:auto;">
-    </p>
+  <!-- 導入 -->
+  <div class="section" id="intro">
+    <h2>導入</h2>
+    <p>※下の画像をそのまま貼り付けてください。</p>
+    <img src="{{ url_for('static', filename='img/ma01_intro1.png') }}"
+         alt="MA01 導入（分数の性質）" style="max-width:100%;" />
+  </div>
 
-    <p><a href="/">← 単元一覧に戻る</a></p>
-</body>
-</html>
+  <!-- 例題 -->
+  <div class="section" id="example">
+    <h2>【例題】</h2>
+    <p>通分……分母を合わせることを通分といいます。</p>
 
+    <div class="problem-box">
+      <p>同じ大きさの分数にしなさい。</p>
+      <div class="q-list">
+        <div class="q-item">
+          (1)
+          <span class="fraction">
+            <span class="num">3</span>
+            <span class="den">5</span>
+          </span>
+          ＝
+          <span class="fraction">
+            <span class="num blank">&nbsp;</span>
+            <span class="den">10</span>
+          </span>
+        </div>
+        <div class="q-item">
+          (2)
+          <span class="fraction">
+            <span class="num">2</span>
+            <span class="den">3</span>
+          </span>
+          ＝
+          <span class="fraction">
+            <span class="num">8</span>
+            <span class="den blank">&nbsp;</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <p>※赤字の数字など、元のプリントのデザインは画像で補っていただいてもかまいません。</p>
+  </div>
+
+  <!-- 類題 -->
+  <div class="section" id="similar">
+    <h2>【類題】</h2>
+
+    <div class="problem-box">
+      <p>同じ大きさの分数にしなさい。</p>
+      <div class="q-list">
+        <div class="q-item">
+          (1)
+          <span class="fraction">
+            <span class="num">1</span>
+            <span class="den">4</span>
+          </span>
+          ＝
+          <span class="fraction">
+            <span class="num blank">&nbsp;</span>
+            <span class="den">8</span>
+          </span>
+        </div>
+        <div class="q-item">
+          (2)
+          <span class="fraction">
+            <span class="num">1</span>
+            <span class="den">3</span>
+          </span>
+          ＝
+          <span class="fraction">
+            <span class="num blank">&nbsp;</span>
+            <span class="den">6</span>
+          </span>
+        </div>
+        <div class="q-item">
+          (3)
+          <span class="fraction">
+            <span class="num">1</span>
+            <span class="den">2</span>
+          </span>
+          ＝
+          <span class="fraction">
+            <span class="num blank">&nbsp;</span>
+            <span class="den">6</span>
+          </span>
+        </div>
+        <div class="q-item">
+          (4)
+          <span class="fraction">
+            <span class="num">1</span>
+            <span class="den">5</span>
+          </span>
+          ＝
+          <span class="fraction">
+            <span class="num blank">&nbsp;</span>
+            <span class="den">15</span>
+          </span>
+        </div>
+        <div class="q-item">
+          (5)
+          <span class="fraction">
+            <span class="num">2</span>
+            <span cl
